@@ -138,11 +138,17 @@
 </body>
 
 <script>
-    const createNewPost = () => {
-        fetch('https://becoder.newpage.xyz/create_json.php')
-            .then(res => res.json())
-            .then(resp => windows.location.replace(`https://becoder.newpage.xyz/project.html?id=${resp.id}`))
-    }
+
+    const vm = new Vue({
+        el: 'app',
+        methods: {
+            createNewPost() {
+                fetch('https://becoder.newpage.xyz/api/create_json.php')
+                    .then(res => res.text())
+                    .then(resp => windows.location.replace(`https://becoder.newpage.xyz/project.html?id=${resp}`))
+            }
+        }
+    })
     
 </script>
 </html>
