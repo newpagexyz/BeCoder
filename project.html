@@ -64,7 +64,7 @@
 
         <div class="info__content screen2">
             <div class="nulll"></div>
-            <div class="screen2__title">Заголовок</div>
+            <div class="screen2__title">{{(projectLabel == "example")? "Заголовок" : projectLabel}}</div>
         </div>
 
         <div class="tabs__content">
@@ -100,7 +100,7 @@
                         <div v-if="isEditMod" class="popap__red red">
 
 
-                    <div class="tabs__info">
+                    <div class="tabs__info2">
                         <div class="tabs__list tabs-list">
                             <div class="tabs-list__conent">
                                 <div class="tabs-list__title tabs-list__item">Заголовок</div>
@@ -139,12 +139,22 @@
                             </label>
                             <button @click="submitButtonHandler" class="popap_ok">OK</button>
                         </div>
+<<<<<<< HEAD
                         <div v-else class="popap__info popap-info">
                             <p class="popap-info__item">{{label}}</p>
                             <p class="popap-info__item">{{selectedAdvData.shortDescription}}</p>
                             <p class="popap-info__item">{{selectedAdvData.fullDescription}}</p>
                             <p class="popap-info__item">{{(this.allData.nodes.filter(e => e.id == selectedNodeID)[0].shape == 'square')? 'Квадрат' : 'Эллипс'}}</p>
                             <button @click="closePopup" class="popap_ok">OK</button>
+=======
+                        <div v-else>
+                            <p>{{label}}</p>
+                            <p>{{selectedAdvData.shortDescription}}</p>
+                            <p>{{selectedAdvData.fullDescription}}</p>
+                            <p>{{(this.allData.nodes.filter(e => e.id == selectedNodeID)[0].shape == 'square')?
+                                'Квадрат' : 'Эллипс'}}</p>
+                            <button @click="closePopup">OK</button>
+>>>>>>> 95a1b638515a6628e42a343179cfac1c5a029ada
                         </div>
                     </div>
                 </div>
@@ -165,11 +175,19 @@
                         </div>
                         <div class="tabs__input tabs-input">
                             <div class="tabs-input__text1 tabs-input__item"><input type="text" placeholder="Заголовок"
+<<<<<<< HEAD
                                                                                    tabindex="1"></div>
                             <div class="tabs-input__text2 tabs-input__item"><input type="text" placeholder="Описание"
                                                                                    tabindex="2"></div>
                             <div class="tabs-input__text3 tabs-input__item"><textarea placeholder="Описание"
                                                                                       tabindex="3"></textarea></div>
+=======
+                                                                                   tabindex="1" v-model="projectLabel"></div>
+                            <div class="tabs-input__text2 tabs-input__item"><input type="text" placeholder="описание"
+                                                                                   tabindex="2" v-model="projectDescription"></div>
+                            <div class="tabs-input__text3 tabs-input__item"><textarea placeholder="описание"
+                                                                                      tabindex="3" v-model="projectFullDescription"></textarea></div>
+>>>>>>> 95a1b638515a6628e42a343179cfac1c5a029ada
                         </div>
                     </div>
                     <div class="tabs__img">
@@ -194,9 +212,25 @@
 <script>
     let network = {}
 
+    const getQueryVariable = (variable) => {
+        const query = window.location.search.substring(1)
+        const vars = query.split("&")
+        for (let i = 0; i < vars.length; i++) {
+            const pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1]
+            }
+        }
+        return null
+    }
+
     const vm = new Vue({
         el: '#app',
         data: {
+            myID: "",
+            projectDescription: "example",
+            projectLabel: "example",
+            projectFullDescription: "example",
             isAddModeActive: false,
             isAddEdgeModeActive: false,
             selectedNodeID: "",
@@ -239,6 +273,7 @@
             },
             commitChanges() {
                 this.isEditMod = false
+                this.fetchAllToServer()
             },
             cancelChanges() {
                 this.init(JSON.parse(this.previousJSON))
@@ -294,8 +329,10 @@
                     this.label = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].label
 
                     switch (this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].shape) {
-                        case "ellipse": this.typeOfBlock = 'Эллипс';
-                        case "square":  this.typeOfBlock = 'Квадрат';
+                        case "ellipse":
+                            this.typeOfBlock = 'Эллипс';
+                        case "square":
+                            this.typeOfBlock = 'Квадрат';
                     }
                 })
 
@@ -355,18 +392,27 @@
                     this.allData.nodes.filter(e => e.id == i)[0].x = pos.x
                     this.allData.nodes.filter(e => e.id == i)[0].y = pos.y
                 })
-                fetch('http://becoder.newpage.xyz', {
+                const formBody = new FormData()
+                formBody.set("json", JSON.stringify(this.allData))
+                fetch('https://becoder.newpage.xyz/api/send_json.php', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: JSON.stringify(this.allData)
+                    body: formBody
                 })
-                console.log(JSON.stringify(this.allData))
             }
         },
         mounted() {
-            this.init({nodes: [], edges: []})
+            this.myID = getQueryVariable("id")
+            fetch(`https://becoder.newpage.xyz/api/get_json.php?id=${this.myID}`)
+                .then(res => res.json())
+                .then(response => {
+                    this.init(response.json.nodes, response.json.edges)
+                })
+                .catch(e => {
+                    this.init({nodes: [], edges: []})
+                })
         }
     })
 </script>
