@@ -22,6 +22,15 @@
   width: 100%;
   height: 100%; }
 
+.screen2 {
+  background: url("../../img/2.webp") 50% 50%/cover no-repeat fixed; }
+
+.screen1 {
+  background: url("../img/office-865091_1920.webp") 50% 50%/cover no-repeat fixed; }
+
+.screen2__title {
+  font-size: 6em; }
+
 .info__content {
   margin: 75px 0 0 0;
   color: #fff;
@@ -34,8 +43,7 @@
   justify-content: space-around;
   -webkit-box-align: center;
   -ms-flex-align: center;
-  align-items: center;
-  background: url("../img/office-865091_1920.webp") 50% 50%/cover no-repeat fixed; }
+  align-items: center; }
 
 .lk__content {
   display: -webkit-box;
