@@ -115,7 +115,7 @@
                             <p>{{label}}</p>
                             <p>{{selectedAdvData.shortDescription}}</p>
                             <p>{{selectedAdvData.fullDescription}}</p>
-                            <p>{{typeOfBlock}}</p>
+                            <p>{{(this.allData.nodes.filter(e => e.id == selectedNodeID)[0].shape == 'square')? 'Квадрат' : 'Эллипс'}}</p>
                             <button @click="closePopup">OK</button>
                         </div>
                     </div>
@@ -171,7 +171,6 @@
             isAddModeActive: false,
             isAddEdgeModeActive: false,
             selectedNodeID: "",
-            picked: "ellipse",
             allData: {
                 nodes: [],
                 edges: []
@@ -200,6 +199,7 @@
                     a.advData.shortDescription = e.advData.shortDescription
                     a.advData.fullDescription = e.advData.fullDescription
                     a.label = e.label
+                    a.shape = e.shape
                     a.x = e.x
                     a.y = e.y
                 })
@@ -233,7 +233,7 @@
                         enabled: false,
                         addNode(nodeData, callback) {
                             nodeData.label = that.newName
-                            nodeData.shape = that.picked
+                            nodeData.shape = 'ellipse'
                             that.isAddModeActive = false
                             nodeData.advData = {
                                 shortDescription: "",
@@ -263,6 +263,11 @@
                     this.selectedNodeID = selectedNodes[0]
                     this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
                     this.label = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].label
+
+                    switch (this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].shape) {
+                        case "ellipse": this.typeOfBlock = 'Эллипс';
+                        case "square":  this.typeOfBlock = 'Квадрат';
+                    }
                 })
 
                 network.on('doubleClick', (eventObject) => {
