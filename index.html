@@ -30,6 +30,14 @@
         <div>{{selectedAdvData}}</div>
     </div>
     <div id="mynetwork"></div>
+    <div class="popup" id="popup">
+        <input type="text" v-model="title">
+        <input type="text" v-model="shortDescript">
+        <input type="text" v-model="fullDescript">
+        <select name="type" v-model="typeOfBlock">
+            <option label="Эллипс"></option>
+        </select>
+    </div>
 </div>
 
 </body>
@@ -45,9 +53,14 @@
             isAddEdgeModeActive: false,
             newName: "",
             newAdvData: "",
-            advData: {},
+            selectedNodeID: "",
+            picked: "ellipse",
+            allData: {
+                nodes: [],
+                edges: []
+            },
             selectedAdvData: "",
-            picked: "ellipse"
+            isEditMod: false
         },
         methods: {
             toggleAddMode() {
@@ -57,16 +70,24 @@
             toggleAddEdgeMode() {
                 this.isAddEdgeModeActive = !this.isAddEdgeModeActive
                 if (this.isAddEdgeModeActive) network.addEdgeMode()
+            },
+
+
+            fetchAllToServer() {
+                fetch('http://becoder.newpage.xyz', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify()
+                })
             }
         },
         mounted() {
             const container = document.getElementById('mynetwork');
             const that = this;
 
-            const datas = {
-                nodes: [],
-                edges: []
-            }
+
             const options = {
                 physics: {
                     enabled: false
@@ -77,21 +98,24 @@
                         nodeData.label = that.newName
                         nodeData.shape = that.picked
                         that.isAddModeActive = false
-                        that.advData[nodeData.id] = that.newAdvData
+                        nodeData.advData = that.newAdvData
+                        that.allData.nodes.push(nodeData)
                         callback(nodeData)
                     },
                     addEdge(edgeData, callback) {
                         that.isAddEdgeModeActive = false
+                        that.allData.edges.push(edgeData)
                         callback(edgeData)
                     }
                 }
             }
-            network = new vis.Network(container, datas, options)
+            network = new vis.Network(container, this.data, options)
 
             network.on('selectNode', () => {
                 const selectedNodes = network.getSelectedNodes()
-                this.selectedAdvData = this.advData[selectedNodes[0]]
-                vm.$forceUpdate()
+                this.selectedNodeID = selectedNodes[0]
+                this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
+                this.isEditMod = true
             })
         }
     })
