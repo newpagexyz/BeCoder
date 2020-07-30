@@ -8,6 +8,15 @@
 * {
   font-family: 'Myriad Pro'; }
 
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column; }
+
 .info {
   background-color: #7e8d90;
   width: 100%;
@@ -127,6 +136,8 @@
   border-radius: 20px;
   background-color: #fff;
   padding: 60px; }
+  .block:last-child {
+    margin: 4em  8em 4em 8em; }
 
 .block__content {
   display: -webkit-box;
@@ -240,3 +251,19 @@
   align-items: center;
   color: #7e8d90;
   font-size: 1.5em; }
+
+.shadow {
+  width: 100vw;
+  height: 30%;
+  z-index: 10;
+  position: fixed;
+  left: 0;
+  bottom: 0; }
+
+.plus {
+  width: 5em;
+  height: 5em;
+  z-index: 10;
+  position: fixed;
+  right: 2%;
+  bottom: 10%; }
