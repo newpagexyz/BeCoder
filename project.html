@@ -115,7 +115,7 @@
                             <p>{{label}}</p>
                             <p>{{selectedAdvData.shortDescription}}</p>
                             <p>{{selectedAdvData.fullDescription}}</p>
-                            <p>{{typeOfBlock}}</p>
+                            <p>{{(this.allData.nodes.filter(e => e.id == selectedNodeID)[0].shape == 'square')? 'Квадрат' : 'Эллипс'}}</p>
                             <button @click="closePopup">OK</button>
                         </div>
                     </div>
