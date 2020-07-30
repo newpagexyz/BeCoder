@@ -62,9 +62,9 @@
         </div>
 
         <div style="display: flex; flex-direction: row">
-            <div style="width: 33%; text-align: center">Структура</div>
-            <div style="width: 34%; text-align: center">Описание</div>
-            <div style="width: 33%; text-align: center">Участники</div>
+            <div style="width: 33%; text-align: center" @click="selectDiv('structure')">Структура</div>
+            <div style="width: 34%; text-align: center" @click="selectDiv('description')">Описание</div>
+            <div style="width: 33%; text-align: center" @click="selectDiv('participants')">Участники</div>
         </div>
 
 
@@ -75,17 +75,25 @@
 
         <div style="background: linear-gradient(to top, #006c96, #8b9aa1)">
             <div style="margin-left: 7em; margin-right: 7em; background: white; margin-top: 5em;">
-                <div style="display: flex; flex-direction: row">
-                    <div style="width: 70%">Блок-схема</div>
-                    <div @click="showPopup" style="width: 30%">
-                        <p>Редактировать</p>
+                <div v-if="isStructureSelected">
+                    <div style="display: flex; flex-direction: row">
+                        <div style="width: 70%">Блок-схема</div>
+                        <div @click="showPopup" style="width: 30%">
+                            <p>Редактировать</p>
+                        </div>
                     </div>
+                    <div id="mynetwork" style="width: 100%; height: 30rem"></div>
+                    <p style="display: flex; flex-direction: row">
+                        <button @click="toggleAddMode">+</button>
+                        <button @click="toggleAddEdgeMode"><==></button>
+                    </p>
                 </div>
-                <div id="mynetwork" style="width: 100%; height: 30rem"></div>
-                <p style="display: flex; flex-direction: row">
-                    <button @click="toggleAddMode">+</button>
-                    <button @click="toggleAddEdgeMode"><==></button>
-                </p>
+                <div v-if="isDescriptionSelected">
+
+                </div>
+                <div v-if="isParticipantsSelected">
+
+                </div>
             </div>
         </div>
         <div id="popup" v-if="popupShowed" style="z-index: 10001; background: #ffffff; top: 15em; bottom: 15em;
@@ -115,19 +123,30 @@
             newAdvData: "",
             selectedNodeID: "",
             picked: "ellipse",
-            allData: {
-                nodes: [],
-                edges: []
-            },
+            allData: {},
             selectedAdvData: "",
             isEditMod: false,
             shortDescript: "",
             label: "",
             typeOfBlock: "Эллипс",
             nnData: {},
-            popupShowed: false
+            popupShowed: false,
+
+            isStructureSelected: true,
+            isDescriptionSelected: false,
+            isParticipantsSelected: false
         },
         methods: {
+            selectDiv(div) {
+                this.isStructureSelected = this.isDescriptionSelected = this.isParticipantsSelected = false
+                switch (div) {
+                    case "structure": {this.isStructureSelected = true; break;}
+                    case "description": {this.isDescriptionSelected = true; break;}
+                    case "participants": {this.isParticipantsSelected = true; break;}
+                }
+
+                setTimeout(() => {this.init(this.allData)}, 300)
+            },
             showPopup() {
                 this.popupShowed = !this.popupShowed
             },
@@ -146,8 +165,7 @@
                     a.y = e.y
                 })
             },
-            createProjectFromJSON(datastring) {
-                const newData = JSON.parse(datastring)
+            init(newData) {
                 const nnData = {
                     nodes: new vis.DataSet(newData.nodes),
                     edges: new vis.DataSet(newData.edges)
@@ -199,6 +217,10 @@
                     this.isEditMod = true
                 })
             },
+            createProjectFromJSON(datastring) {
+                const newData = JSON.parse(datastring)
+                this.init(newData)
+            },
             toggleAddMode() {
                 this.isAddModeActive = !this.isAddModeActive
                 if (this.isAddModeActive) network.addNodeMode()
@@ -247,59 +269,7 @@
             }
         },
         mounted() {
-            const container = document.getElementById('mynetwork');
-            const that = this;
-
-
-            const options = {
-                physics: {
-                    enabled: false
-                },
-                manipulation: {
-                    enabled: false,
-                    addNode(nodeData, callback) {
-                        nodeData.label = that.newName
-                        nodeData.shape = that.picked
-                        that.isAddModeActive = false
-                        nodeData.advData = {
-                            shortDescription: that.newAdvData
-                        }
-                        that.allData.nodes.push(nodeData)
-                        callback(nodeData)
-                    },
-                    addEdge(edgeData, callback) {
-                        that.isAddEdgeModeActive = false
-                        that.allData.edges.push(edgeData)
-                        callback(edgeData)
-                    },
-                    deleteNode(nodeData, callback) {
-                        that.allData.nodes = that.allData.nodes.filter(e => e.id != nodeData.nodes[0])
-                        callback(nodeData)
-                    },
-                    deleteEdge(edgeData, callback) {
-                        that.allData.edges = that.allData.edges.filter(e => e.id != edgeData.edges[0])
-                        callback(edgeData)
-                    }
-                }
-            }
-
-            const nodes = new vis.DataSet([])
-            const edges = new vis.DataSet([])
-
-            this.nnData = {
-                nodes: nodes,
-                edges: edges
-            };
-            network = new vis.Network(container, this.nnData, options)
-
-            network.on('selectNode', () => {
-                const selectedNodes = network.getSelectedNodes()
-                this.selectedNodeID = selectedNodes[0]
-                this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
-                this.shortDescript = this.selectedAdvData.shortDescription
-                this.label = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].label
-                this.isEditMod = true
-            })
+            this.init({nodes: [], edges: []})
         }
     })
 
