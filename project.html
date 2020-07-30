@@ -27,10 +27,9 @@
 <div id="app" @keydown.delete="deleteSelected">
     <div class="wrapper">
         <div v-if="popupShowed" @click="closePopup"
-             style="background: black; opacity: 0.5; position: absolute; z-index: 98; width: 100%; height: 100%"></div>
+             style="background: black; opacity: 0.5; position: fixed; z-index: 98; width: 100%; height: 100%"></div>
         <div class="nav">
             <div class="container">
-
 
                 <div class="nav__row">
                     <div class="null">
@@ -78,33 +77,47 @@
                 <div class="tabs__block" id="tab_01">
                     <div class="tabs__top">
                         <div class="tabs__title">Блок-схема</div>
-                        <div class="tabs__red" @click="showPopup">Редактировать</div>
+                        <div class="tabs__red">
+                            <div v-if="isEditMod"><p @click="commitChanges">ОК</p>
+                                <p @click="cancelChanges">Cancel</p></div>
+                            <p v-else @click="toggleEditMode">
+                                Редактировать
+                            </p>
+                        </div>
                     </div>
                     <hr>
-                    <div>
-                        <input type="text" v-model="newName" v-if="isAddModeActive">
-                        <input type="text" v-model="newAdvData" v-if="isAddModeActive">
-                    </div>
-
                     <div style="background: linear-gradient(to top, #006c96, #8b9aa1)">
                         <div style="margin-left: 7em; margin-right: 7em; background: white; margin-top: 5em;">
                             <div id="mynetwork" style="width: 100%; height: 30rem"></div>
 
                         </div>
                     </div>
-                    <div>
+                    <div v-if="isEditMod">
                         <button @click="toggleAddMode">+</button>
                         <button @click="toggleAddEdgeMode"><==></button>
                     </div>
                     <div id="popup" v-if="popupShowed" style="position: absolute; left: 20em; right: 20em;
-                                            bottom: 25em; background: #ffffff; z-index: 99; display: flex; flex-direction: column">
-                        <input type="text" v-model="label">
-                        <input type="text" v-model="shortDescript">
-                        <select v-model="typeOfBlock">
-                            <option selected>Эллипс</option>
-                            <option>Квадрат</option>
-                        </select>
-                        <button @click="submitButtonHandler">OK</button>
+                                            bottom: 25em; background: #ffffff; z-index: 99; display: flex;
+                                            flex-direction: column">
+                        <div v-if="isEditMod">
+                            <input type="text" v-model="label">
+                            <input type="text" v-model="selectedAdvData.shortDescription">
+                            <input type="text" v-model="selectedAdvData.fullDescription">
+                            <label>
+                                <select v-model="typeOfBlock">
+                                    <option selected>Эллипс</option>
+                                    <option>Квадрат</option>
+                                </select>
+                            </label>
+                            <button @click="submitButtonHandler">OK</button>
+                        </div>
+                        <div v-else>
+                            <p>{{label}}</p>
+                            <p>{{selectedAdvData.shortDescription}}</p>
+                            <p>{{selectedAdvData.fullDescription}}</p>
+                            <p>{{typeOfBlock}}</p>
+                            <button @click="closePopup">OK</button>
+                        </div>
                     </div>
                 </div>
                 <div class="tabs__block" id="tab_02">
@@ -156,21 +169,19 @@
         data: {
             isAddModeActive: false,
             isAddEdgeModeActive: false,
-            newName: "",
-            newAdvData: "",
             selectedNodeID: "",
             picked: "ellipse",
             allData: {
                 nodes: [],
                 edges: []
             },
-            selectedAdvData: "",
+            selectedAdvData: {},
             isEditMod: false,
-            shortDescript: "",
             label: "",
             typeOfBlock: "Эллипс",
             nnData: {},
-            popupShowed: false
+            popupShowed: false,
+            previousJSON: ""
         },
         methods: {
             deleteSelected() {
@@ -186,10 +197,22 @@
                 this.nnData.nodes.forEach((e, i) => {
                     const a = this.allData.nodes.filter(b => b.id == i)[0]
                     a.advData.shortDescription = e.advData.shortDescription
+                    a.advData.fullDescription = e.advData.fullDescription
                     a.label = e.label
                     a.x = e.x
                     a.y = e.y
                 })
+            },
+            toggleEditMode() {
+                this.isEditMod = !this.isEditMod
+                this.previousJSON = JSON.stringify(this.allData)
+            },
+            commitChanges() {
+                this.isEditMod = false
+            },
+            cancelChanges() {
+                this.init(JSON.parse(this.previousJSON))
+                this.isEditMod = false
             },
             init(newData) {
                 const nnData = {
@@ -200,7 +223,6 @@
                 this.allData = newData
                 const container = document.getElementById('mynetwork');
                 const that = this;
-
 
                 const options = {
                     physics: {
@@ -213,7 +235,8 @@
                             nodeData.shape = that.picked
                             that.isAddModeActive = false
                             nodeData.advData = {
-                                shortDescription: that.newAdvData
+                                shortDescription: "",
+                                fullDescription: ""
                             }
                             that.allData.nodes.push(nodeData)
                             callback(nodeData)
@@ -238,9 +261,16 @@
                     const selectedNodes = network.getSelectedNodes()
                     this.selectedNodeID = selectedNodes[0]
                     this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
-                    this.shortDescript = this.selectedAdvData.shortDescription
                     this.label = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].label
-                    this.isEditMod = true
+                })
+
+                network.on('doubleClick', (eventObject) => {
+                    const selectedNodeId = eventObject.nodes[0]
+                    const selectedNode = that.allData.nodes.filter(e => e.id == selectedNodeId)[0]
+
+                    that.selectedAdvData = selectedNode.advData
+                    that.label = selectedNode.label
+                    that.showPopup()
                 })
             },
             createProjectFromJSON(datastring) {
@@ -275,7 +305,9 @@
                     label: this.label,
                     shape: shape
                 })
-                selectedNode.advData.shortDescription = this.shortDescript
+                selectedNode.advData.shortDescription = this.selectedAdvData.shortDescription
+                selectedNode.advData.fullDescription = this.selectedAdvData.fullDescription
+                selectedNode.label = this.label
 
                 this.sync()
                 this.closePopup()
