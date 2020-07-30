@@ -30,13 +30,14 @@
         <div>{{selectedAdvData}}</div>
     </div>
     <div id="mynetwork"></div>
-    <div class="popup" id="popup">
+    <div id="popup">
         <input type="text" v-model="title">
         <input type="text" v-model="shortDescript">
-        <input type="text" v-model="fullDescript">
-        <select name="type" v-model="typeOfBlock">
-            <option label="Эллипс"></option>
+        <select v-model="typeOfBlock">
+            <option selected>Эллипс</option>
+            <option>Квадрат</option>
         </select>
+        <button @click="submitButtonHandler">OK</button>
     </div>
 </div>
 
@@ -60,9 +61,51 @@
                 edges: []
             },
             selectedAdvData: "",
-            isEditMod: false
+            isEditMod: false,
+            titleObject: "",
+            shortDescript: "",
+            title: "",
+            typeOfBlock: "",
+            nnData: {}
         },
         methods: {
+            createProjectFromJSON(datastring) {
+                const newData = JSON.parse(datastring)
+                const nnData = {
+                    nodes: new vis.DataSet(newData.nodes),
+                    edges: new vis.DataSet(newData.edges)
+                }
+                this.nnData = nnData
+                this.allData = newData
+                const container = document.getElementById('mynetwork');
+                const that = this;
+
+
+                const options = {
+                    physics: {
+                        enabled: false
+                    },
+                    manipulation: {
+                        enabled: false,
+                        addNode(nodeData, callback) {
+                            nodeData.label = that.newName
+                            nodeData.shape = that.picked
+                            that.isAddModeActive = false
+                            nodeData.advData = {
+                                shortDescription: that.newAdvData
+                            }
+                            that.allData.nodes.push(nodeData)
+                            callback(nodeData)
+                        },
+                        addEdge(edgeData, callback) {
+                            that.isAddEdgeModeActive = false
+                            that.allData.edges.push(edgeData)
+                            callback(edgeData)
+                        }
+                    }
+                }
+                network = new vis.Network(container, nnData, options)
+            },
             toggleAddMode() {
                 this.isAddModeActive = !this.isAddModeActive
                 if (this.isAddModeActive) network.addNodeMode()
@@ -72,15 +115,36 @@
                 if (this.isAddEdgeModeActive) network.addEdgeMode()
             },
 
+            submitButtonHandler() {
+                const selectedNode = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0]
+                let shape = ""
+                switch (this.typeOfBlock) {
+                    case "Эллипс": {
+                        shape = 'ellipse';
+                        break;
+                    }
+                    case "Квадрат": {
+                        shape = 'square';
+                        break;
+                    }
+                }
+                this.nnData.nodes.update({id: this.selectedNodeID, label: this.title, shape: shape})
+                selectedNode.advData.shortDescription = this.shortDescript
+            },
 
             fetchAllToServer() {
+                for (let i = 0; i < this.nnData.length; i++) {
+                    this.allData[i].x = this.nnData[i].x
+                    this.allData[i].y = this.nnData[i].y
+                }
                 fetch('http://becoder.newpage.xyz', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify()
+                    body: JSON.stringify(this.allData)
                 })
+                console.log(JSON.stringify(this.allData))
             }
         },
         mounted() {
@@ -98,7 +162,9 @@
                         nodeData.label = that.newName
                         nodeData.shape = that.picked
                         that.isAddModeActive = false
-                        nodeData.advData = that.newAdvData
+                        nodeData.advData = {
+                            shortDescription: that.newAdvData
+                        }
                         that.allData.nodes.push(nodeData)
                         callback(nodeData)
                     },
@@ -109,12 +175,22 @@
                     }
                 }
             }
-            network = new vis.Network(container, this.data, options)
+
+            const nodes = new vis.DataSet([])
+            const edges = new vis.DataSet([])
+
+            this.nnData = {
+                nodes: nodes,
+                edges: edges
+            };
+            network = new vis.Network(container, this.nnData, options)
 
             network.on('selectNode', () => {
                 const selectedNodes = network.getSelectedNodes()
                 this.selectedNodeID = selectedNodes[0]
                 this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
+                this.shortDescript = this.selectedAdvData.shortDescription
+                this.title = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].label
                 this.isEditMod = true
             })
         }
