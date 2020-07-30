@@ -8,30 +8,85 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://unpkg.com/vuex"></script>
-    <script src="https://unpkg.com/vue-drag-drop"></script>
+
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 </head>
 <body>
-<div id="app">
-    <drag class="drag" :transfer-data="{ draggable }">Отсюда</drag>
-    <drop class="drop" @drop="handleDrop">Сюда</drop>
+
+<div id="app" style="width: 1000px; height: 1000px">
+
+    <button @click="toggleAddMode">TOGGLE постановка кружочков{{isAddModeActive}}</button>
+    <button @click="toggleAddEdgeMode">TOGGLE постановка палочек{{isAddEdgeModeActive}}</button>
+    <div>
+        <input type="text" v-model="newName" v-if="isAddModeActive">
+        <input type="text" v-model="newAdvData" v-if="isAddModeActive">
+        <div>{{selectedAdvData}}</div>
+    </div>
+    <div id="mynetwork"></div>
 </div>
 
 </body>
 
 <script>
 
-    Vue.component('drag', VueDragDrop.Drag)
-    Vue.component('drop', VueDragDrop.Drop)
+    let network = {}
 
     const vm = new Vue({
         el: '#app',
-        data: () => ({ draggable: 'Drag'}),
-        methods: {
-            handleDrop(data, event) {
-                alert(`You dropped with data: ${JSON.stringify(data)}`);
-            },
+        data: {
+            isAddModeActive: false,
+            isAddEdgeModeActive: false,
+            newName: "",
+            newAdvData: "",
+            advData: {},
+            selectedAdvData: "",
         },
-    });
+        methods: {
+            toggleAddMode() {
+                this.isAddModeActive = !this.isAddModeActive
+                if (this.isAddModeActive) network.addNodeMode()
+            },
+            toggleAddEdgeMode() {
+                this.isAddEdgeModeActive = !this.isAddEdgeModeActive
+                if (this.isAddEdgeModeActive) network.addEdgeMode()
+            }
+        },
+        mounted() {
+            const container = document.getElementById('mynetwork');
+            const that = this;
+
+            const datas = {
+                nodes: [],
+                edges: []
+            }
+            const options = {
+                physics: {
+                    enabled: false
+                },
+                manipulation: {
+                    enabled: false,
+                    addNode(nodeData, callback) {
+                        nodeData.label = that.newName
+                        that.isAddModeActive = false
+                        that.advData[nodeData.id] = that.newAdvData
+                        callback(nodeData)
+                    },
+                    addEdge(edgeData, callback) {
+                        that.isAddEdgeModeActive = false
+                        callback(edgeData)
+                    }
+                }
+            }
+            network = new vis.Network(container, datas, options)
+
+            network.on('selectNode', () => {
+                const selectedNodes = network.getSelectedNodes()
+                this.selectedAdvData = this.advData[selectedNodes[0]]
+                vm.$forceUpdate()
+            })
+        }
+    })
+
+
 </script>
 </html>
