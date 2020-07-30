@@ -115,7 +115,8 @@
                             <p>{{label}}</p>
                             <p>{{selectedAdvData.shortDescription}}</p>
                             <p>{{selectedAdvData.fullDescription}}</p>
-                            <p>{{(this.allData.nodes.filter(e => e.id == selectedNodeID)[0].shape == 'square')? 'Квадрат' : 'Эллипс'}}</p>
+                            <p>{{(this.allData.nodes.filter(e => e.id == selectedNodeID)[0].shape == 'square')?
+                                'Квадрат' : 'Эллипс'}}</p>
                             <button @click="closePopup">OK</button>
                         </div>
                     </div>
@@ -165,9 +166,22 @@
 <script>
     let network = {}
 
+    const getQueryVariable = (variable) => {
+        const query = window.location.search.substring(1)
+        const vars = query.split("&")
+        for (let i = 0; i < vars.length; i++) {
+            const pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1]
+            }
+        }
+        return null
+    }
+
     const vm = new Vue({
         el: '#app',
         data: {
+            myID: "",
             isAddModeActive: false,
             isAddEdgeModeActive: false,
             selectedNodeID: "",
@@ -210,6 +224,7 @@
             },
             commitChanges() {
                 this.isEditMod = false
+                this.fetchAllToServer()
             },
             cancelChanges() {
                 this.init(JSON.parse(this.previousJSON))
@@ -265,8 +280,10 @@
                     this.label = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].label
 
                     switch (this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].shape) {
-                        case "ellipse": this.typeOfBlock = 'Эллипс';
-                        case "square":  this.typeOfBlock = 'Квадрат';
+                        case "ellipse":
+                            this.typeOfBlock = 'Эллипс';
+                        case "square":
+                            this.typeOfBlock = 'Квадрат';
                     }
                 })
 
@@ -326,18 +343,27 @@
                     this.allData.nodes.filter(e => e.id == i)[0].x = pos.x
                     this.allData.nodes.filter(e => e.id == i)[0].y = pos.y
                 })
-                fetch('http://becoder.newpage.xyz', {
+                const formBody = new FormData()
+                formBody.set("json", JSON.stringify(this.allData))
+                fetch('http://becoder.newpage.xyz/send_json.php', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: JSON.stringify(this.allData)
+                    body: formBody
                 })
-                console.log(JSON.stringify(this.allData))
             }
         },
         mounted() {
-            this.init({nodes: [], edges: []})
+            this.myID = getQueryVariable("id")
+            fetch(`https://becoder.newpage.xyz/get_json.php?id=${this.myID}`)
+                .then(res => res.json())
+                .then(response => {
+                    this.init(response.json.nodes, response.json.edges)
+                })
+                .catch(e => {
+                    this.init({nodes: [], edges: []})
+                })
         }
     })
 </script>

@@ -126,7 +126,7 @@
 
                 </div>
               
-                <a class="plus" href="project.html">
+                <a class="plus" onclick="createNewPost()">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill='#EB00D7'><path d="M19 10h-5V5c0-1.1-.9-2-2-2s-2 .9-2 2v5H5c-1.1 0-2 .9-2 2s.9 2 2 2h5v5c0 1.1.9 2 2 2s2-.9 2-2v-5h5c1.1 0 2-.9 2-2s-.9-2-2-2z"></path></g></svg>
                 </a>
        
@@ -138,9 +138,11 @@
 </body>
 
 <script>
-
-   
-
+    const createNewPost = () => {
+        fetch('https://becoder.newpage.xyz/create_json.php')
+            .then(res => res.json())
+            .then(resp => windows.location.replace(`https://becoder.newpage.xyz/project.html?id=${resp.id}`))
+    }
     
 </script>
 </html>
