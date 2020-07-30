@@ -64,7 +64,7 @@
 
         <div class="info__content screen2">
             <div class="nulll"></div>
-            <div class="screen2__title">Заголовок</div>
+            <div class="screen2__title">{{(projectLabel == "example")? "Заголовок" : projectLabel}}</div>
         </div>
 
         <div class="tabs__content">
@@ -137,11 +137,11 @@
                         </div>
                         <div class="tabs__input tabs-input">
                             <div class="tabs-input__text1 tabs-input__item"><input type="text" placeholder="Заголовок"
-                                                                                   tabindex="1"></div>
+                                                                                   tabindex="1" v-model="projectLabel"></div>
                             <div class="tabs-input__text2 tabs-input__item"><input type="text" placeholder="описание"
-                                                                                   tabindex="2"></div>
+                                                                                   tabindex="2" v-model="projectDescription"></div>
                             <div class="tabs-input__text3 tabs-input__item"><textarea placeholder="описание"
-                                                                                      tabindex="3"></textarea></div>
+                                                                                      tabindex="3" v-model="projectFullDescription"></textarea></div>
                         </div>
                     </div>
                     <div class="tabs__img">
@@ -182,6 +182,9 @@
         el: '#app',
         data: {
             myID: "",
+            projectDescription: "example",
+            projectLabel: "example",
+            projectFullDescription: "example",
             isAddModeActive: false,
             isAddEdgeModeActive: false,
             selectedNodeID: "",
