@@ -14,16 +14,12 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-    <link rel="shortcut icon" href="icon/logo.svg" type="image/x-icon">
-    <link rel="stylesheet" href="style/project.css">
-    <link rel="stylesheet" href="style/null.css">
-
-    <link rel="stylesheet" href="style/nav.css">
 </head>
 
 <body>
 
     <div id="app" @keydown.delete="deleteSelected">
+        <div v-if="popupShowed" @click="closePopup" style="position: fixed; width: 100%; height: 100%; background: #000000; opacity: 0.7; z-index: 10000"></div>
         <div class="wrapper">
             <div class="nav">
                 <div class="container">
@@ -59,113 +55,90 @@
                     </div>
                 </div>
             </div>
-
-            <div class="info__content screen2">
-                <div class="nulll"></div>
-                <div class="screen2__title">Заголовок</div>
-            </div>
-
-            <div class="tabs__content">
-                <nav class="tabs__items">
-                    <a href="#tab_01" class="tabs__item">Структура</a>
-                    <a href="#tab_02" class="tabs__item">Описание</a>
-                    <a href="#tab_03" class="tabs__item">Участники</a>
-                </nav>
-                <div class="tabs__body">
-                    <div class="tabs__block" id="tab_01">
-                        <div class="tabs__top">
-                            <div class="tabs__title">Структура</div>
-                            <div class="tabs__red">Редактировать</div>
-                        </div>
-                        <hr>
-                        <div>
-                            <input type="text" v-model="newName" v-if="isAddModeActive">
-                            <input type="text" v-model="newAdvData" v-if="isAddModeActive">
-                        </div>
-
-                        <div style="background: linear-gradient(to top, #006c96, #8b9aa1)">
-                            <div style="margin-left: 7em; margin-right: 7em; background: white; margin-top: 5em;">
-                                <div style="display: flex; flex-direction: row">
-                                    <div style="width: 70%">Блок-схема</div>
-                                    <div style="width: 30%" @mouseenter="startEditing" @mouseleave="stopEditing">
-                                        <p v-if="isEditing">Редактировать</p>
-                                        <p v-else style="display: flex; flex-direction: row">
-                                            <button @click="toggleAddMode">+</button>
-                                            <button @click="toggleAddEdgeMode"><==></button></p>
-                                    </div>
-                                </div>
-                                <div id="mynetwork" style="width: 100%; height: 30rem"></div>
-
-                            </div>
-                        </div>
-                        <div id="popup">
-                            <input type="text" v-model="label">
-                            <input type="text" v-model="shortDescript">
-                            <select v-model="typeOfBlock">
-                <option selected>Эллипс</option>
-                <option>Квадрат</option>
-            </select>
-                            <button @click="submitButtonHandler">OK</button>
-                        </div>
-                       </div>
-                            <div class="tabs__block" id="tab_02">
-                                <div class="tabs__top">
-                                    <div class="tabs__title">Описание</div>
-                                    <div class="tabs__red">Редактировать</div>
-                                </div>
-                                <hr>
-                                <div class="tabs__info">
-                                    <div class="tabs__list tabs-list">
-                                        <div class="tabs-list__conent">
-                                            <div class="tabs-list__title tabs-list__item">Заголовок</div>
-                                            <div class="tabs-list__text tabs-list__item">Краткое описание</div>
-                                            <div class="tabs-list__textarea tabs-list__item">полное описание</div>
-                                        </div>
-                                    </div>
-                                    <div class="tabs__input tabs-input">
-                                        <div class="tabs-input__text1 tabs-input__item"><input type="text" placeholder="Заголовок" tabindex="1"></div>
-                                        <div class="tabs-input__text2 tabs-input__item"><input type="text" placeholder="описание" tabindex="2"></div>
-                                        <div class="tabs-input__text3 tabs-input__item"><textarea placeholder="описание" tabindex="3"></textarea></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tabs__block" id="tab_03">
-                                <div class="tabs__top">
-                                    <div class="tabs__title">Участники</div>
-                                    <div class="tabs__red">Редактировать</div>
-                                </div>
-                                <hr>
-                            </div>
+            <div class="info__content" style="background: url('img/building-1245986_1920.jpg')">
+                <div class="info__proj proj">
+                    <div class="proj__contentn">
+                        ЗАГОЛОВОК
                     </div>
                 </div>
             </div>
 
+            <div style="display: flex; flex-direction: row">
+                <div style="width: 33%; text-align: center" @click="selectDiv('structure')">Структура</div>
+                <div style="width: 34%; text-align: center" @click="selectDiv('description')">Описание</div>
+                <div style="width: 33%; text-align: center" @click="selectDiv('participants')">Участники</div>
+            </div>
 
-            <button @click="toggleAddMode">TOGGLE постановка кружочков{{isAddModeActive}}</button>
-            <button @click="toggleAddEdgeMode">TOGGLE постановка палочек{{isAddEdgeModeActive}}</button>
+
             <div>
                 <input type="text" v-model="newName" v-if="isAddModeActive">
                 <input type="text" v-model="newAdvData" v-if="isAddModeActive">
-                <form>
-                    <input type="radio" id="one" value="ellipse" v-model="picked" checked="checked">
-                    <label for="one">Эллипс</label>
-                    <br>
-                    <input type="radio" id="two" value="square" v-model="picked">
-                    <label for="two">квадрт</label>
-                </form>
-                <div>{{selectedAdvData}}</div>
             </div>
-            <div id="mynetwork"></div>
-            <div id="popup">
-                <input type="text" v-model="label">
-                <input type="text" v-model="shortDescript">
-                <select v-model="typeOfBlock">
-            <option selected>Эллипс</option>
-            <option>Квадрат</option>
-        </select>
-                <button @click="submitButtonHandler">OK</button> 
+
+            <div style="background: linear-gradient(to top, #006c96, #8b9aa1)">
+                <div style="margin-left: 7em; margin-right: 7em; background: white; margin-top: 5em;">
+                    <div v-if="isStructureSelected">
+                        <div style="display: flex; flex-direction: row">
+                            <div style="width: 70%">Блок-схема</div>
+                            <div @click="showPopup" style="width: 30%">
+                                <p>Редактировать</p>
+                            </div>
+                        </div>
+                        <div class="tabs__block" id="tab_02">
+                            <div class="tabs__top">
+                                <div class="tabs__title">Описание</div>
+                                <div class="tabs__red">Редактировать</div>
+                            </div>
+                            <hr>
+                            <div class="tabs__info">
+                                <div class="tabs__list tabs-list">
+                                    <div class="tabs-list__conent">
+                                        <div class="tabs-list__title tabs-list__item">Заголовок</div>
+                                        <div class="tabs-list__text tabs-list__item">Краткое описание</div>
+                                        <div class="tabs-list__textarea tabs-list__item">полное описание</div>
+                                    </div>
+                                </div>
+                                <div class="tabs__input tabs-input">
+                                    <div class="tabs-input__text1 tabs-input__item"><input type="text" placeholder="Заголовок" tabindex="1"></div>
+                                    <div class="tabs-input__text2 tabs-input__item"><input type="text" placeholder="описание" tabindex="2"></div>
+                                    <div class="tabs-input__text3 tabs-input__item"><textarea placeholder="описание" tabindex="3"></textarea></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tabs__block" id="tab_03">
+                            <div class="tabs__top">
+                                <div class="tabs__title">Участники</div>
+                                <div class="tabs__red">Редактировать</div>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                    <div id="mynetwork" style="width: 100%; height: 30rem"></div>
+                    <p style="display: flex; flex-direction: row">
+                        <button @click="toggleAddMode">+</button>
+                        <button @click="toggleAddEdgeMode"><==></button>
+                    </p>
+                </div>
+                <div v-if="isDescriptionSelected">
+
+                </div>
+                <div v-if="isParticipantsSelected">
+
+                </div>
             </div>
         </div>
+        <div id="popup" v-if="popupShowed" style="z-index: 10001; background: #ffffff; top: 15em; bottom: 15em;
+        left: 15em; right: 15em; position: absolute; display: flex; flex-direction: column">
+            <input type="text" v-model="label">
+            <input type="text" v-model="shortDescript">
+            <select v-model="typeOfBlock">
+                <option selected>Эллипс</option>
+                <option>Квадрат</option>
+            </select>
+            <button @click="submitButtonHandler">OK</button>
+        </div>
+    </div>
+    </div>
 </body>
 
 <script>
@@ -180,27 +153,52 @@
             newAdvData: "",
             selectedNodeID: "",
             picked: "ellipse",
-            allData: {
-                nodes: [],
-                edges: []
-            },
+            allData: {},
             selectedAdvData: "",
             isEditMod: false,
             shortDescript: "",
             label: "",
-            typeOfBlock: "",
+            typeOfBlock: "Эллипс",
             nnData: {},
-            isEditing: true
+            popupShowed: false,
+
+            isStructureSelected: true,
+            isDescriptionSelected: false,
+            isParticipantsSelected: false
         },
         methods: {
+            selectDiv(div) {
+                this.isStructureSelected = this.isDescriptionSelected = this.isParticipantsSelected = false
+                switch (div) {
+                    case "structure":
+                        {
+                            this.isStructureSelected = true;
+                            break;
+                        }
+                    case "description":
+                        {
+                            this.isDescriptionSelected = true;
+                            break;
+                        }
+                    case "participants":
+                        {
+                            this.isParticipantsSelected = true;
+                            break;
+                        }
+                }
+
+                setTimeout(() => {
+                    this.init(this.allData)
+                }, 300)
+            },
+            showPopup() {
+                this.popupShowed = !this.popupShowed
+            },
+            closePopup() {
+                this.popupShowed = false
+            },
             deleteSelected() {
                 network.deleteSelected()
-            },
-            startEditing() {
-                this.isEditing = false
-            },
-            stopEditing() {
-                this.isEditing = true
             },
             sync() {
                 this.nnData.nodes.forEach((e, i) => {
@@ -211,8 +209,7 @@
                     a.y = e.y
                 })
             },
-            createProjectFromJSON(datastring) {
-                const newData = JSON.parse(datastring)
+            init(newData) {
                 const nnData = {
                     nodes: new vis.DataSet(newData.nodes),
                     edges: new vis.DataSet(newData.edges)
@@ -264,6 +261,10 @@
                     this.isEditMod = true
                 })
             },
+            createProjectFromJSON(datastring) {
+                const newData = JSON.parse(datastring)
+                this.init(newData)
+            },
             toggleAddMode() {
                 this.isAddModeActive = !this.isAddModeActive
                 if (this.isAddModeActive) network.addNodeMode()
@@ -297,6 +298,7 @@
                 selectedNode.advData.shortDescription = this.shortDescript
 
                 this.sync()
+                this.popupShowed = false
             },
 
             fetchAllToServer() {
@@ -317,58 +319,9 @@
             }
         },
         mounted() {
-            const container = document.getElementById('mynetwork');
-            const that = this;
-
-
-            const options = {
-                physics: {
-                    enabled: false
-                },
-                manipulation: {
-                    enabled: false,
-                    addNode(nodeData, callback) {
-                        nodeData.label = that.newName
-                        nodeData.shape = that.picked
-                        that.isAddModeActive = false
-                        nodeData.advData = {
-                            shortDescription: that.newAdvData
-                        }
-                        that.allData.nodes.push(nodeData)
-                        callback(nodeData)
-                    },
-                    addEdge(edgeData, callback) {
-                        that.isAddEdgeModeActive = false
-                        that.allData.edges.push(edgeData)
-                        callback(edgeData)
-                    },
-                    deleteNode(nodeData, callback) {
-                        that.allData.nodes = that.allData.nodes.filter(e => e.id != nodeData.nodes[0])
-                        callback(nodeData)
-                    },
-                    deleteEdge(edgeData, callback) {
-                        that.allData.edges = that.allData.edges.filter(e => e.id != edgeData.edges[0])
-                        callback(edgeData)
-                    }
-                }
-            }
-
-            const nodes = new vis.DataSet([])
-            const edges = new vis.DataSet([])
-
-            this.nnData = {
-                nodes: nodes,
-                edges: edges
-            };
-            network = new vis.Network(container, this.nnData, options)
-
-            network.on('selectNode', () => {
-                const selectedNodes = network.getSelectedNodes()
-                this.selectedNodeID = selectedNodes[0]
-                this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
-                this.shortDescript = this.selectedAdvData.shortDescription
-                this.label = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].label
-                this.isEditMod = true
+            this.init({
+                nodes: [],
+                edges: []
             })
         }
     })
