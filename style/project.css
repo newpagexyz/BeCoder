@@ -280,7 +280,6 @@
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  bottom: 25em;
   background: #ffffff;
   z-index: 99;
   display: -webkit-box;
@@ -290,3 +289,9 @@
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column; }
+
+.popap__red {
+  background-color: #fff; }
+
+.tabs__info2 {
+  padding: 1em; }
