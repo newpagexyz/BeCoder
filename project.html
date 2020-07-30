@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BeCoder</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body>
+
+<div id="app" style="width: 1000px; height: 1000px">
+
+    <button @click="toggleAddMode">TOGGLE постановка кружочков{{isAddModeActive}}</button>
+    <button @click="toggleAddEdgeMode">TOGGLE постановка палочек{{isAddEdgeModeActive}}</button>
+    <div>
+        <input type="text" v-model="newName" v-if="isAddModeActive">
+        <input type="text" v-model="newAdvData" v-if="isAddModeActive">
+        <form>
+            <input type="radio" id="one" value="ellipse" v-model="picked" checked="checked">
+            <label for="one">Эллипс</label>
+            <br>
+            <input type="radio" id="two" value="square" v-model="picked">
+            <label for="two">квадрт</label>
+        </form>
+        <div>{{selectedAdvData}}</div>
+    </div>
+    <div id="mynetwork"></div>
+    <div class="popup" id="popup">
+        <input type="text" v-model="title">
+        <input type="text" v-model="shortDescript">
+        <input type="text" v-model="fullDescript">
+        <select name="type" v-model="typeOfBlock">
+            <option label="Эллипс"></option>
+        </select>
+    </div>
+</div>
+
+</body>
+
+<script>
+
+    let network = {}
+
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            isAddModeActive: false,
+            isAddEdgeModeActive: false,
+            newName: "",
+            newAdvData: "",
+            selectedNodeID: "",
+            picked: "ellipse",
+            allData: {
+                nodes: [],
+                edges: []
+            },
+            selectedAdvData: "",
+            isEditMod: false
+        },
+        methods: {
+            toggleAddMode() {
+                this.isAddModeActive = !this.isAddModeActive
+                if (this.isAddModeActive) network.addNodeMode()
+            },
+            toggleAddEdgeMode() {
+                this.isAddEdgeModeActive = !this.isAddEdgeModeActive
+                if (this.isAddEdgeModeActive) network.addEdgeMode()
+            },
+
+
+            fetchAllToServer() {
+                fetch('http://becoder.newpage.xyz', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify()
+                })
+            }
+        },
+        mounted() {
+            const container = document.getElementById('mynetwork');
+            const that = this;
+
+
+            const options = {
+                physics: {
+                    enabled: false
+                },
+                manipulation: {
+                    enabled: false,
+                    addNode(nodeData, callback) {
+                        nodeData.label = that.newName
+                        nodeData.shape = that.picked
+                        that.isAddModeActive = false
+                        nodeData.advData = that.newAdvData
+                        that.allData.nodes.push(nodeData)
+                        callback(nodeData)
+                    },
+                    addEdge(edgeData, callback) {
+                        that.isAddEdgeModeActive = false
+                        that.allData.edges.push(edgeData)
+                        callback(edgeData)
+                    }
+                }
+            }
+            network = new vis.Network(container, this.data, options)
+
+            network.on('selectNode', () => {
+                const selectedNodes = network.getSelectedNodes()
+                this.selectedNodeID = selectedNodes[0]
+                this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
+                this.isEditMod = true
+            })
+        }
+    })
+
+
+</script>
+</html>
