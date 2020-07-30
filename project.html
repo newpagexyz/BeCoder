@@ -136,8 +136,14 @@
                         break;
                     }
                 }
+
                 this.nnData.nodes.update({id: this.selectedNodeID, label: this.title, shape: shape})
                 selectedNode.advData.shortDescription = this.shortDescript
+
+                for (let i = 0; i < this.nnData.length; i++) {
+                    this.allData[i].x = this.nnData[i].x
+                    this.allData[i].y = this.nnData[i].y
+                }
             },
 
             fetchAllToServer() {
