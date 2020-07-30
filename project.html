@@ -31,7 +31,7 @@
     </div>
     <div id="mynetwork"></div>
     <div id="popup">
-        <input type="text" v-model="title">
+        <input type="text" v-model="label">
         <input type="text" v-model="shortDescript">
         <select v-model="typeOfBlock">
             <option selected>Эллипс</option>
@@ -62,13 +62,19 @@
             },
             selectedAdvData: "",
             isEditMod: false,
-            titleObject: "",
             shortDescript: "",
-            title: "",
+            label: "",
             typeOfBlock: "",
             nnData: {}
         },
         methods: {
+            sync() {
+                this.nnData.nodes.forEach((e, i) => {
+                    const a = this.allData.nodes.filter(b => b.id == i)[0]
+                    a.shortDescription = e.shortDescription
+                    a.label = e.label
+                })
+            },
             createProjectFromJSON(datastring) {
                 const newData = JSON.parse(datastring)
                 const nnData = {
@@ -110,7 +116,7 @@
                     this.selectedNodeID = selectedNodes[0]
                     this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
                     this.shortDescript = this.selectedAdvData.shortDescription
-                    this.title = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].label
+                    this.label = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].label
                     this.isEditMod = true
                 })
             },
@@ -137,20 +143,14 @@
                     }
                 }
 
-                this.nnData.nodes.update({id: this.selectedNodeID, label: this.title, shape: shape})
+                this.nnData.nodes.update({id: this.selectedNodeID, label: this.label, shape: shape})
                 selectedNode.advData.shortDescription = this.shortDescript
 
-                for (let i = 0; i < this.nnData.length; i++) {
-                    this.allData[i].x = this.nnData[i].x
-                    this.allData[i].y = this.nnData[i].y
-                }
+                this.sync()
             },
 
             fetchAllToServer() {
-                for (let i = 0; i < this.nnData.length; i++) {
-                    this.allData[i].x = this.nnData[i].x
-                    this.allData[i].y = this.nnData[i].y
-                }
+                this.sync()
                 fetch('http://becoder.newpage.xyz', {
                     method: 'POST',
                     headers: {
@@ -204,7 +204,7 @@
                 this.selectedNodeID = selectedNodes[0]
                 this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
                 this.shortDescript = this.selectedAdvData.shortDescription
-                this.title = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].label
+                this.label = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].label
                 this.isEditMod = true
             })
         }
