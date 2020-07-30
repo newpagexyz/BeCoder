@@ -1,171 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>BeCoder</title>
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style/index.css">
+    <link rel="stylesheet" href="style/null.css">
+
+    <link rel="stylesheet" href="style/nav.css">
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
     <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-     <link rel="shortcut icon" href="icon/logo.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="icon/logo.svg" type="image/x-icon">
     <link rel="stylesheet" href="style/project.css">
     <link rel="stylesheet" href="style/null.css">
-    
+
     <link rel="stylesheet" href="style/nav.css">
 </head>
+
 <body>
 
-<div id="app" @keydown.delete="deleteSelected">
-     <div class="wrapper">
-        <div class="nav">
-        <div class="container">
+    <div id="app" @keydown.delete="deleteSelected">
+        <div class="wrapper">
+            <div class="nav">
+                <div class="container">
 
-            
-                <div class="nav__row">
-                    <div class="null">
-                        <div class="logo__list">
-                        <div><a href="" class="nav__logo"><img src="icon/logo.svg"></a></div>
-                        
-                        </div>
-                    </div>
-                    <div class="nav__menu menu">
-                        <div class="menu__icon icon__menu">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <nav class="menu__body">
-                            <ul class="menu__list">
-                                <li><a href="" class="menu__link">Профиль</a></li>
-                                <li><a href="" class="menu__link">Статистика</a></li>
-                                <li><a href="" class="menu__link">О проекте</a></li>
-                                <li><a href="" class="menu__link">Контакты</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="nav__actions act-nav">
-                       <a class="act-nav__region"><span>поиск</span></a>            
-                    </div>
-            </div>
-            </div>
-        </div>
-       
-                <div class="info__content screen2">
-                    <div class="nulll"></div>
-                    <div class="screen2__title">Заголовок</div>
-                </div>
 
-                <div class="tabs__content">
-                    <nav class="tabs__items">
-                        <a href="#tab_01" class="tabs__item">Структура</a>
-                        <a href="#tab_02" class="tabs__item">Описание</a>
-                        <a href="#tab_03" class="tabs__item">Участники</a>
-                    </nav>
-                    <div class="tabs__body">
-                        <div class="tabs__block" id="tab_01">
-                                <div class="tabs__top">
-                                     <div class="tabs__title">Структура</div>
-                                     <div class="tabs__red">Редактировать</div>
+                    <div class="nav__row">
+                        <div class="null">
+                            <div class="logo__list">
+                                <div>
+                                    <a href="" class="nav__logo"><img src="icon/logo.svg"></a>
                                 </div>
-                            <hr>
-                               <div>
-            <input type="text" v-model="newName" v-if="isAddModeActive">
-            <input type="text" v-model="newAdvData" v-if="isAddModeActive">
-        </div>
 
-        <div style="background: linear-gradient(to top, #006c96, #8b9aa1)">
-            <div style="margin-left: 7em; margin-right: 7em; background: white; margin-top: 5em;">
-                <div style="display: flex; flex-direction: row">
-                    <div style="width: 70%">Блок-схема</div>
-                    <div style="width: 30%"
-                    @mouseenter="startEditing"
-                         @mouseleave="stopEditing">
-                        <p v-if="isEditing">Редактировать</p>
-                        <p v-else style="display: flex; flex-direction: row">
-                            <button @click="toggleAddMode">+</button>
-                            <button @click="toggleAddEdgeMode"><==></button></p>
+                            </div>
+                        </div>
+                        <div class="nav__menu menu">
+                            <div class="menu__icon icon__menu">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <nav class="menu__body">
+                                <ul class="menu__list">
+                                    <li><a href="" class="menu__link">Профиль</a></li>
+                                    <li><a href="" class="menu__link">Статистика</a></li>
+                                    <li><a href="" class="menu__link">О проекте</a></li>
+                                    <li><a href="" class="menu__link">Контакты</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="nav__actions act-nav">
+                            <a class="act-nav__region"><span>поиск</span></a>
+                        </div>
                     </div>
                 </div>
-                <div id="mynetwork" style="width: 100%; height: 30rem"></div>
-
             </div>
-        </div>
-        <div id="popup">
-            <input type="text" v-model="label">
-            <input type="text" v-model="shortDescript">
-            <select v-model="typeOfBlock">
+
+            <div class="info__content screen2">
+                <div class="nulll"></div>
+                <div class="screen2__title">Заголовок</div>
+            </div>
+
+            <div class="tabs__content">
+                <nav class="tabs__items">
+                    <a href="#tab_01" class="tabs__item">Структура</a>
+                    <a href="#tab_02" class="tabs__item">Описание</a>
+                    <a href="#tab_03" class="tabs__item">Участники</a>
+                </nav>
+                <div class="tabs__body">
+                    <div class="tabs__block" id="tab_01">
+                        <div class="tabs__top">
+                            <div class="tabs__title">Структура</div>
+                            <div class="tabs__red">Редактировать</div>
+                        </div>
+                        <hr>
+                        <div>
+                            <input type="text" v-model="newName" v-if="isAddModeActive">
+                            <input type="text" v-model="newAdvData" v-if="isAddModeActive">
+                        </div>
+
+                        <div style="background: linear-gradient(to top, #006c96, #8b9aa1)">
+                            <div style="margin-left: 7em; margin-right: 7em; background: white; margin-top: 5em;">
+                                <div style="display: flex; flex-direction: row">
+                                    <div style="width: 70%">Блок-схема</div>
+                                    <div style="width: 30%" @mouseenter="startEditing" @mouseleave="stopEditing">
+                                        <p v-if="isEditing">Редактировать</p>
+                                        <p v-else style="display: flex; flex-direction: row">
+                                            <button @click="toggleAddMode">+</button>
+                                            <button @click="toggleAddEdgeMode"><==></button></p>
+                                    </div>
+                                </div>
+                                <div id="mynetwork" style="width: 100%; height: 30rem"></div>
+
+                            </div>
+                        </div>
+                        <div id="popup">
+                            <input type="text" v-model="label">
+                            <input type="text" v-model="shortDescript">
+                            <select v-model="typeOfBlock">
                 <option selected>Эллипс</option>
                 <option>Квадрат</option>
             </select>
-            <button @click="submitButtonHandler">OK</button>
-        </div>
+                            <button @click="submitButtonHandler">OK</button>
                         </div>
-                        <div class="tabs__block" id="tab_02">
-                            <div class="tabs__top">
-                                <div class="tabs__title">Описание</div>
-                                <div class="tabs__red">Редактировать</div>
-                            </div>
-                            <hr>
-                            <div class="tabs__info">
-                                <div class="tabs__list tabs-list">
-                                    <div class="tabs-list__conent">
-                                        <div class="tabs-list__title tabs-list__item">Заголовок</div>
-                                        <div class="tabs-list__text tabs-list__item">Краткое описание</div>
-                                        <div class="tabs-list__textarea tabs-list__item">полное описание</div>
+                        <<<<<<< HEAD </div>
+                            <div class="tabs__block" id="tab_02">
+                                <div class="tabs__top">
+                                    <div class="tabs__title">Описание</div>
+                                    <div class="tabs__red">Редактировать</div>
+                                </div>
+                                <hr>
+                                <div class="tabs__info">
+                                    <div class="tabs__list tabs-list">
+                                        <div class="tabs-list__conent">
+                                            <div class="tabs-list__title tabs-list__item">Заголовок</div>
+                                            <div class="tabs-list__text tabs-list__item">Краткое описание</div>
+                                            <div class="tabs-list__textarea tabs-list__item">полное описание</div>
+                                        </div>
+                                    </div>
+                                    <div class="tabs__input tabs-input">
+                                        <div class="tabs-input__text1"><input type="text" placeholder="Заголовок" tabindex="1"></div>
+                                        <div class="tabs-input__text2"><input type="text" placeholder="описание" tabindex="2"></div>
+                                        <div class="tabs-input__text3"><textarea placeholder="описание" tabindex="3"></textarea></div>
                                     </div>
                                 </div>
-                                <div class="tabs__input tabs-input">
-                                    <div class="tabs-input__text1"><input type="text" placeholder="Заголовок" tabindex="1"></div>
-                                    <div class="tabs-input__text2"><input type="text" placeholder="описание" tabindex="2"></div>
-                                    <div class="tabs-input__text3"><textarea placeholder="описание" tabindex="3"></textarea></div>
+                            </div>
+                            <div class="tabs__block" id="tab_03">
+                                <div class="tabs__top">
+                                    <div class="tabs__title">Участники</div>
+                                    <div class="tabs__red">Редактировать</div>
                                 </div>
+                                <hr>
                             </div>
-                        </div>
-                        <div class="tabs__block" id="tab_03">
-                            <div class="tabs__top">
-                                <div class="tabs__title">Участники</div>
-                                <div class="tabs__red">Редактировать</div>
-                            </div>
-                            <hr>
-                        </div>
                     </div>
                 </div>
             </div>
 
 
-    <button @click="toggleAddMode">TOGGLE постановка кружочков{{isAddModeActive}}</button>
-    <button @click="toggleAddEdgeMode">TOGGLE постановка палочек{{isAddEdgeModeActive}}</button>
-    <div>
-        <input type="text" v-model="newName" v-if="isAddModeActive">
-        <input type="text" v-model="newAdvData" v-if="isAddModeActive">
-        <form>
-            <input type="radio" id="one" value="ellipse" v-model="picked" checked="checked">
-            <label for="one">Эллипс</label>
-            <br>
-            <input type="radio" id="two" value="square" v-model="picked">
-            <label for="two">квадрт</label>
-        </form>
-        <div>{{selectedAdvData}}</div>
-    </div>
-    <div id="mynetwork"></div>
-    <div id="popup">
-        <input type="text" v-model="label">
-        <input type="text" v-model="shortDescript">
-        <select v-model="typeOfBlock">
+            <button @click="toggleAddMode">TOGGLE постановка кружочков{{isAddModeActive}}</button>
+            <button @click="toggleAddEdgeMode">TOGGLE постановка палочек{{isAddEdgeModeActive}}</button>
+            <div>
+                <input type="text" v-model="newName" v-if="isAddModeActive">
+                <input type="text" v-model="newAdvData" v-if="isAddModeActive">
+                <form>
+                    <input type="radio" id="one" value="ellipse" v-model="picked" checked="checked">
+                    <label for="one">Эллипс</label>
+                    <br>
+                    <input type="radio" id="two" value="square" v-model="picked">
+                    <label for="two">квадрт</label>
+                </form>
+                <div>{{selectedAdvData}}</div>
+            </div>
+            <div id="mynetwork"></div>
+            <div id="popup">
+                <input type="text" v-model="label">
+                <input type="text" v-model="shortDescript">
+                <select v-model="typeOfBlock">
             <option selected>Эллипс</option>
             <option>Квадрат</option>
         </select>
-        <button @click="submitButtonHandler">OK</button>
-    </div>
-</div>
-
+                <button @click="submitButtonHandler">OK</button> ======= >>>>>>> ba1f4f3b2aa645859ee7654486f1cdad7bd2ac81
+            </div>
+        </div>
 </body>
 
 <script>
-
     let network = {}
 
     const vm = new Vue({
@@ -186,9 +189,19 @@
             shortDescript: "",
             label: "",
             typeOfBlock: "",
-            nnData: {}
+            nnData: {},
+            isEditing: true
         },
         methods: {
+            deleteSelected() {
+                network.deleteSelected()
+            },
+            startEditing() {
+                this.isEditing = false
+            },
+            stopEditing() {
+                this.isEditing = true
+            },
             sync() {
                 this.nnData.nodes.forEach((e, i) => {
                     const a = this.allData.nodes.filter(b => b.id == i)[0]
@@ -230,6 +243,14 @@
                             that.isAddEdgeModeActive = false
                             that.allData.edges.push(edgeData)
                             callback(edgeData)
+                        },
+                        deleteNode(nodeData, callback) {
+                            that.allData.nodes = that.allData.nodes.filter(e => e.id != nodeData.nodes[0])
+                            callback(nodeData)
+                        },
+                        deleteEdge(edgeData, callback) {
+                            that.allData.edges = that.allData.edges.filter(e => e.id != edgeData.edges[0])
+                            callback(edgeData)
                         }
                     }
                 }
@@ -256,17 +277,23 @@
                 const selectedNode = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0]
                 let shape = ""
                 switch (this.typeOfBlock) {
-                    case "Эллипс": {
-                        shape = 'ellipse';
-                        break;
-                    }
-                    case "Квадрат": {
-                        shape = 'square';
-                        break;
-                    }
+                    case "Эллипс":
+                        {
+                            shape = 'ellipse';
+                            break;
+                        }
+                    case "Квадрат":
+                        {
+                            shape = 'square';
+                            break;
+                        }
                 }
 
-                this.nnData.nodes.update({id: this.selectedNodeID, label: this.label, shape: shape})
+                this.nnData.nodes.update({
+                    id: this.selectedNodeID,
+                    label: this.label,
+                    shape: shape
+                })
                 selectedNode.advData.shortDescription = this.shortDescript
 
                 this.sync()
@@ -274,7 +301,7 @@
 
             fetchAllToServer() {
                 this.sync()
-                this.nnData.nodes.forEach((e,i) => {
+                this.nnData.nodes.forEach((e, i) => {
                     const pos = network.getPosition(i)
                     this.allData.nodes.filter(e => e.id == i)[0].x = pos.x
                     this.allData.nodes.filter(e => e.id == i)[0].y = pos.y
@@ -314,6 +341,14 @@
                         that.isAddEdgeModeActive = false
                         that.allData.edges.push(edgeData)
                         callback(edgeData)
+                    },
+                    deleteNode(nodeData, callback) {
+                        that.allData.nodes = that.allData.nodes.filter(e => e.id != nodeData.nodes[0])
+                        callback(nodeData)
+                    },
+                    deleteEdge(edgeData, callback) {
+                        that.allData.edges = that.allData.edges.filter(e => e.id != edgeData.edges[0])
+                        callback(edgeData)
                     }
                 }
             }
@@ -337,7 +372,6 @@
             })
         }
     })
-
-
 </script>
+
 </html>
