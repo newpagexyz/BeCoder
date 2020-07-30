@@ -266,13 +266,19 @@ background-color: #f5f3f3;
 	position: absolute;
 	 left: 50%; top: 50%;
 	transform: translate(-50%, -50%);
-   bottom: 25em; background: #ffffff; z-index: 99; display: flex;
+   background: #ffffff; z-index: 99;
+    display: flex;
    flex-direction: column
 }
-.popap__red {}
+.popap__red {
+	background-color: #fff;
+}
 .red {}
 .red__item {}
 .popap_ok {}
 .popap__info {}
 .popap-info {}
 .popap-info__item {}
+.tabs__info2{
+	padding: 1em;
+}
