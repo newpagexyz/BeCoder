@@ -1,0 +1,30 @@
+@font-face {
+    font-family: 'MADE Evolve Sans';
+    src: local('MADE Evolve Sans Medium'), local('MADEEvolveSans-Medium'), url('Madeevolvesansmedium.woff2') format('woff2'), url('Madeevolvesansmedium.woff') format('woff'), url('Madeevolvesansmedium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'MADE Evolve Sans';
+    src: local('MADE Evolve Sans Thin'), local('MADEEvolveSans-Thin'), url('Madeevolvesansthin.woff2') format('woff2'), url('Madeevolvesansthin.woff') format('woff'), url('Madeevolvesansthin.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'MADE Evolve Sans';
+    src: local('MADE Evolve Sans Light'), local('MADEEvolveSans-Light'), url('Madeevolvesanslight.woff2') format('woff2'), url('Madeevolvesanslight.woff') format('woff'), url('Madeevolvesanslight.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'MADE Evolve Sans';
+    src: local('MADE Evolve Sans'), local('MADEEvolveSans'), url('Madeevolvesans.woff2') format('woff2'), url('Madeevolvesans.woff') format('woff'), url('Madeevolvesans.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'MADE Evolve Sans';
+    src: local('MADE Evolve Sans Bold'), local('MADEEvolveSans-Bold'), url('Madeevolvesansbold.woff2') format('woff2'), url('Madeevolvesansbold.woff') format('woff'), url('Madeevolvesansbold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
