@@ -90,7 +90,8 @@
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: distribute;
-  justify-content: space-around; }
+  justify-content: space-around;
+  margin: 0 0 20px 0; }
 
 .proj__started {
   display: -webkit-box;
@@ -99,6 +100,8 @@
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between; }
+  .proj__started p {
+    margin: 0 20px 0 0; }
 
 .choos__content {
   width: 100%;
@@ -132,7 +135,7 @@
   background: linear-gradient(180deg, #f0f7fa 0%, #12aff0 100%); }
 
 .block {
-  margin: 4em  8em 0 8em;
+  margin: 4em  10em 0 10em;
   border-radius: 20px;
   background-color: #fff;
   padding: 60px; }

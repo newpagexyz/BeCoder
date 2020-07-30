@@ -77,10 +77,14 @@
 .proj__ended {
 	display: flex;
 	justify-content: space-around;
+	margin: 0 0 20px 0;
 }
 .proj__started {
 	display: flex;
 	justify-content: space-between;
+	& p{
+		margin: 0 20px 0 0;
+	}
 }
 ////////
 .choos__content{
@@ -106,7 +110,7 @@ background: linear-gradient(180deg, rgba(240,247,250,1) 0%, rgba(18,175,240,1) 1
 
 }
 .block {
-	margin: 4em  8em 0 8em;
+	margin: 4em  10em 0 10em;
 	border-radius: 20px;
 	
 	background-color: #fff;
