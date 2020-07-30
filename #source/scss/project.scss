@@ -202,3 +202,15 @@ font-size: 1.2em;
 .tabs-input__text3 {
 	padding: 0.8em 0;
 }
+///
+.tabs__img {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	& img{
+		width: 160px;
+		height: 160px;
+	}
+	padding: 0 0 1em 0;
+}
