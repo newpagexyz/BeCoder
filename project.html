@@ -26,7 +26,7 @@
                 <div class="nav__row">
                     <div class="null">
                         <div class="logo__list">
-                            <div><a href="" class="nav__logo"><img src="img/logo.webp"></a></div>
+                            <div><a href="" class="nav__logo"><img src="icon/logo.svg"></a></div>
 
                         </div>
                     </div>
@@ -66,8 +66,6 @@
         </div>
 
 
-        <button @click="toggleAddMode">TOGGLE постановка кружочков{{isAddModeActive}}</button>
-        <button @click="toggleAddEdgeMode">TOGGLE постановка палочек{{isAddEdgeModeActive}}</button>
         <div>
             <input type="text" v-model="newName" v-if="isAddModeActive">
             <input type="text" v-model="newAdvData" v-if="isAddModeActive">
@@ -80,7 +78,14 @@
             </form>
             <div>{{selectedAdvData}}</div>
         </div>
-        <div id="mynetwork" style="width: 100%; height: 30rem"></div>
+
+        <div style="background: linear-gradient(to top, #006c96, #8b9aa1)">
+            <div style="margin-left: 7em; margin-right: 7em; background: white; margin-top: 5em;">
+                <div id="mynetwork" style="width: 100%; height: 30rem"></div>
+                <button @click="toggleAddMode">TOGGLE постановка кружочков{{isAddModeActive}}</button>
+                <button @click="toggleAddEdgeMode">TOGGLE постановка палочек{{isAddEdgeModeActive}}</button>
+            </div>
+        </div>
         <div id="popup">
             <input type="text" v-model="label">
             <input type="text" v-model="shortDescript">
