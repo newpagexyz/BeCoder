@@ -71,8 +71,10 @@
             sync() {
                 this.nnData.nodes.forEach((e, i) => {
                     const a = this.allData.nodes.filter(b => b.id == i)[0]
-                    a.shortDescription = e.shortDescription
+                    a.advData.shortDescription = e.advData.shortDescription
                     a.label = e.label
+                    a.x = e.x
+                    a.y = e.y
                 })
             },
             createProjectFromJSON(datastring) {
@@ -151,6 +153,11 @@
 
             fetchAllToServer() {
                 this.sync()
+                this.nnData.nodes.forEach((e,i) => {
+                    const pos = network.getPosition(i)
+                    this.allData.nodes.filter(e => e.id == i)[0].x = pos.x
+                    this.allData.nodes.filter(e => e.id == i)[0].y = pos.y
+                })
                 fetch('http://becoder.newpage.xyz', {
                     method: 'POST',
                     headers: {
