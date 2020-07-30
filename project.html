@@ -6,6 +6,10 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style/index.css">
+    <link rel="stylesheet" href="style/null.css">
+
+    <link rel="stylesheet" href="style/nav.css">
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
@@ -13,34 +17,81 @@
 </head>
 <body>
 
-<div id="app" style="width: 1000px; height: 1000px">
+<div id="app">
+    <div class="wrapper">
+        <div class="nav">
+            <div class="container">
 
-    <button @click="toggleAddMode">TOGGLE постановка кружочков{{isAddModeActive}}</button>
-    <button @click="toggleAddEdgeMode">TOGGLE постановка палочек{{isAddEdgeModeActive}}</button>
-    <div>
-        <input type="text" v-model="newName" v-if="isAddModeActive">
-        <input type="text" v-model="newAdvData" v-if="isAddModeActive">
-        <form>
-            <input type="radio" id="one" value="ellipse" v-model="picked" checked="checked">
-            <label for="one">Эллипс</label>
-            <br>
-            <input type="radio" id="two" value="square" v-model="picked">
-            <label for="two">квадрт</label>
-        </form>
-        <div>{{selectedAdvData}}</div>
-    </div>
-    <div id="mynetwork"></div>
-    <div id="popup">
-        <input type="text" v-model="label">
-        <input type="text" v-model="shortDescript">
-        <select v-model="typeOfBlock">
-            <option selected>Эллипс</option>
-            <option>Квадрат</option>
-        </select>
-        <button @click="submitButtonHandler">OK</button>
+
+                <div class="nav__row">
+                    <div class="null">
+                        <div class="logo__list">
+                            <div><a href="" class="nav__logo"><img src="img/logo.webp"></a></div>
+
+                        </div>
+                    </div>
+                    <div class="nav__menu menu">
+                        <div class="menu__icon icon__menu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <nav class="menu__body">
+                            <ul class="menu__list">
+                                <li><a href="" class="menu__link">Профиль</a></li>
+                                <li><a href="" class="menu__link">Статистика</a></li>
+                                <li><a href="" class="menu__link">О проекте</a></li>
+                                <li><a href="" class="menu__link">Контакты</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="nav__actions act-nav">
+                        <a class="act-nav__region"><span>поиск</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="info__content" style="background: url('img/building-1245986_1920.jpg')">
+            <div class="info__proj proj">
+                <div class="proj__contentn">
+                    ЗАГОЛОВОК
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: row">
+            <div style="width: 33%; text-align: center">Структура</div>
+            <div style="width: 34%; text-align: center">Описание</div>
+            <div style="width: 33%; text-align: center">Участники</div>
+        </div>
+
+
+        <button @click="toggleAddMode">TOGGLE постановка кружочков{{isAddModeActive}}</button>
+        <button @click="toggleAddEdgeMode">TOGGLE постановка палочек{{isAddEdgeModeActive}}</button>
+        <div>
+            <input type="text" v-model="newName" v-if="isAddModeActive">
+            <input type="text" v-model="newAdvData" v-if="isAddModeActive">
+            <form>
+                <input type="radio" id="one" value="ellipse" v-model="picked" checked="checked">
+                <label for="one">Эллипс</label>
+                <br>
+                <input type="radio" id="two" value="square" v-model="picked">
+                <label for="two">квадрт</label>
+            </form>
+            <div>{{selectedAdvData}}</div>
+        </div>
+        <div id="mynetwork" style="width: 100%; height: 30rem"></div>
+        <div id="popup">
+            <input type="text" v-model="label">
+            <input type="text" v-model="shortDescript">
+            <select v-model="typeOfBlock">
+                <option selected>Эллипс</option>
+                <option>Квадрат</option>
+            </select>
+            <button @click="submitButtonHandler">OK</button>
+        </div>
     </div>
 </div>
-
 </body>
 
 <script>
@@ -153,7 +204,7 @@
 
             fetchAllToServer() {
                 this.sync()
-                this.nnData.nodes.forEach((e,i) => {
+                this.nnData.nodes.forEach((e, i) => {
                     const pos = network.getPosition(i)
                     this.allData.nodes.filter(e => e.id == i)[0].x = pos.x
                     this.allData.nodes.filter(e => e.id == i)[0].y = pos.y
