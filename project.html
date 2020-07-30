@@ -18,8 +18,8 @@
 <body>
 
 <div id="app" @keydown.delete="deleteSelected">
-    <div    v-if="popupShowed"
-            style="position: fixed; width: 100%; height: 100%; background: #000000; opacity: 0.7; z-index: 10000"></div>
+    <div v-if="popupShowed"
+         style="position: fixed; width: 100%; height: 100%; background: #000000; opacity: 0.7; z-index: 10000"></div>
     <div class="wrapper">
         <div class="nav">
             <div class="container">
@@ -77,20 +77,20 @@
             <div style="margin-left: 7em; margin-right: 7em; background: white; margin-top: 5em;">
                 <div style="display: flex; flex-direction: row">
                     <div style="width: 70%">Блок-схема</div>
-                    <div style="width: 30%"
-                    @mouseenter="startEditing"
-                         @mouseleave="stopEditing">
-                        <p v-if="isEditing">Редактировать</p>
-                        <p v-else style="display: flex; flex-direction: row">
+                    <div style="width: 30%">
+                        <p>Редактировать</p>
+                        <p style="display: flex; flex-direction: row">
                             <button @click="toggleAddMode">+</button>
-                            <button @click="toggleAddEdgeMode"><==></button></p>
+                            <button @click="toggleAddEdgeMode"><==></button>
+                        </p>
                     </div>
                 </div>
                 <div id="mynetwork" style="width: 100%; height: 30rem"></div>
 
             </div>
         </div>
-        <div id="popup">
+        <div id="popup" v-if="popupShowed" style="z-index: 10001; background: #ffffff; top: 15em; bottom: 15em;
+        left: 15em; right: 15em; position: absolute">
             <input type="text" v-model="label">
             <input type="text" v-model="shortDescript">
             <select v-model="typeOfBlock">
@@ -126,18 +126,14 @@
             label: "",
             typeOfBlock: "",
             nnData: {},
-            isEditing: true,
             popupShowed: false
         },
         methods: {
+            showPopup() {
+                this.popupShowed = !this.popupShowed
+            },
             deleteSelected() {
                 network.deleteSelected()
-            },
-            startEditing() {
-                this.isEditing = false
-            },
-            stopEditing() {
-                this.isEditing = true
             },
             sync() {
                 this.nnData.nodes.forEach((e, i) => {
