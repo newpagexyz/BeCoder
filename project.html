@@ -78,47 +78,76 @@
                     <div class="tabs__top">
                         <div class="tabs__title">Блок-схема</div>
                         <div class="tabs__red">
-                            <div v-if="isEditMod"><p @click="commitChanges">ОК</p>
-                                <p @click="cancelChanges">Cancel</p></div>
+                            <div v-if="isEditMod"><p @click="commitChanges">Приминить</p>
+                                <p @click="cancelChanges">Отменить</p></div>
                             <p v-else @click="toggleEditMode">
                                 Редактировать
                             </p>
                         </div>
                     </div>
                     <hr>
-                    <div style="background: linear-gradient(to top, #006c96, #8b9aa1)">
-                        <div style="margin-left: 7em; margin-right: 7em; background: white; margin-top: 5em;">
-                            <div id="mynetwork" style="width: 100%; height: 30rem"></div>
-
+                <div class="network">
+                        <div class="network__content">
+                        <div class="network__mynetwork" >
+                            <div id="mynetwork" class="network__mynetwork__item" ></div>
                         </div>
                     </div>
-                    <div v-if="isEditMod">
-                        <button @click="toggleAddMode">+</button>
-                        <button @click="toggleAddEdgeMode"><==></button>
+                    <div v-if="isEditMod" class="network__btns">
+                        <button @click="toggleAddMode" class="network__btnAddObj">Добавить объект+</button>
+                        <button @click="toggleAddEdgeMode" class="network__btnAddArrow">Соединить объекты<==></button>
                     </div>
-                    <div id="popup" v-if="popupShowed" style="position: absolute; left: 20em; right: 20em;
-                                            bottom: 25em; background: #ffffff; z-index: 99; display: flex;
-                                            flex-direction: column">
-                        <div v-if="isEditMod">
-                            <input type="text" v-model="label">
-                            <input type="text" v-model="selectedAdvData.shortDescription">
-                            <input type="text" v-model="selectedAdvData.fullDescription">
-                            <label>
+                    <div id="popup" v-if="popupShowed"  class="popap" >
+                        <div v-if="isEditMod" class="popap__red red">
+
+
+                    <div class="tabs__info">
+                        <div class="tabs__list tabs-list">
+                            <div class="tabs-list__conent">
+                                <div class="tabs-list__title tabs-list__item">Заголовок</div>
+                                <div class="tabs-list__text tabs-list__item">Краткое описание</div>
+                                <div class="tabs-list__textarea tabs-list__item">Полное описание</div>
+                            </div>
+                        </div>
+                        <div class="tabs__input tabs-input">
+                            <div class="tabs-input__text1 tabs-input__item"><input type="text" v-model="label" placeholder="Заголовок"
+                                                                                   tabindex="1" v-model="selectedAdvData.shortDescription" ></div>
+                            <div class="tabs-input__text2 tabs-input__item"><input type="text" v-model="selectedAdvData.fullDescription" placeholder="Описание"
+                                                                                   tabindex="2"></div>
+                            <div class="tabs-input__text3 tabs-input__item"><input type="text" placeholder="Описание"
+                                                                                      tabindex="3"></div>
+                            <div class="tabs-input__text3 tabs-input__item">
+                                <label class="red__item">
+                                <select v-model="typeOfBlock" tabindex="4">
+                                    <option selected>Эллипс</option>
+                                    <option>Квадрат</option>
+                                </select>
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                            <input type="text" v-model="label" class="red__item">
+                            <input type="text" v-model="selectedAdvData.shortDescription" class="red__item">
+                            <input type="text" v-model="selectedAdvData.fullDescription" class="red__item">
+                            <label class="red__item">
                                 <select v-model="typeOfBlock">
                                     <option selected>Эллипс</option>
                                     <option>Квадрат</option>
                                 </select>
                             </label>
-                            <button @click="submitButtonHandler">OK</button>
+                            <button @click="submitButtonHandler" class="popap_ok">OK</button>
                         </div>
-                        <div v-else>
-                            <p>{{label}}</p>
-                            <p>{{selectedAdvData.shortDescription}}</p>
-                            <p>{{selectedAdvData.fullDescription}}</p>
-                            <p>{{(this.allData.nodes.filter(e => e.id == selectedNodeID)[0].shape == 'square')? 'Квадрат' : 'Эллипс'}}</p>
-                            <button @click="closePopup">OK</button>
+                        <div v-else class="popap__info popap-info">
+                            <p class="popap-info__item">{{label}}</p>
+                            <p class="popap-info__item">{{selectedAdvData.shortDescription}}</p>
+                            <p class="popap-info__item">{{selectedAdvData.fullDescription}}</p>
+                            <p class="popap-info__item">{{(this.allData.nodes.filter(e => e.id == selectedNodeID)[0].shape == 'square')? 'Квадрат' : 'Эллипс'}}</p>
+                            <button @click="closePopup" class="popap_ok">OK</button>
                         </div>
                     </div>
+                </div>
                 </div>
                 <div class="tabs__block" id="tab_02">
                     <div class="tabs__top">
@@ -131,20 +160,20 @@
                             <div class="tabs-list__conent">
                                 <div class="tabs-list__title tabs-list__item">Заголовок</div>
                                 <div class="tabs-list__text tabs-list__item">Краткое описание</div>
-                                <div class="tabs-list__textarea tabs-list__item">полное описание</div>
+                                <div class="tabs-list__textarea tabs-list__item">Полное описание</div>
                             </div>
                         </div>
                         <div class="tabs__input tabs-input">
                             <div class="tabs-input__text1 tabs-input__item"><input type="text" placeholder="Заголовок"
                                                                                    tabindex="1"></div>
-                            <div class="tabs-input__text2 tabs-input__item"><input type="text" placeholder="описание"
+                            <div class="tabs-input__text2 tabs-input__item"><input type="text" placeholder="Описание"
                                                                                    tabindex="2"></div>
-                            <div class="tabs-input__text3 tabs-input__item"><textarea placeholder="описание"
+                            <div class="tabs-input__text3 tabs-input__item"><textarea placeholder="Описание"
                                                                                       tabindex="3"></textarea></div>
                         </div>
                     </div>
                     <div class="tabs__img">
-                        <img src="img/foto.jpg" alt="">
+                        <img src="img/1.jpg" alt="">
                         <input type="file">
                     </div>
                 </div>
