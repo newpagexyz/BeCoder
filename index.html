@@ -20,6 +20,13 @@
     <div>
         <input type="text" v-model="newName" v-if="isAddModeActive">
         <input type="text" v-model="newAdvData" v-if="isAddModeActive">
+        <form>
+            <input type="radio" id="one" value="ellipse" v-model="picked" checked="checked">
+            <label for="one">Эллипс</label>
+            <br>
+            <input type="radio" id="two" value="square" v-model="picked">
+            <label for="two">квадрт</label>
+        </form>
         <div>{{selectedAdvData}}</div>
     </div>
     <div id="mynetwork"></div>
@@ -40,6 +47,7 @@
             newAdvData: "",
             advData: {},
             selectedAdvData: "",
+            picked: "ellipse"
         },
         methods: {
             toggleAddMode() {
@@ -67,6 +75,7 @@
                     enabled: false,
                     addNode(nodeData, callback) {
                         nodeData.label = that.newName
+                        nodeData.shape = that.picked
                         that.isAddModeActive = false
                         that.advData[nodeData.id] = that.newAdvData
                         callback(nodeData)
