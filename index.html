@@ -8,8 +8,30 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuex"></script>
+    <script src="https://unpkg.com/vue-drag-drop"></script>
 </head>
 <body>
+<div id="app">
+    <drag class="drag" :transfer-data="{ draggable }">Отсюда</drag>
+    <drop class="drop" @drop="handleDrop">Сюда</drop>
+</div>
 
 </body>
+
+<script>
+
+    Vue.component('drag', VueDragDrop.Drag)
+    Vue.component('drop', VueDragDrop.Drop)
+
+    const vm = new Vue({
+        el: '#app',
+        data: () => ({ draggable: 'Drag'}),
+        methods: {
+            handleDrop(data, event) {
+                alert(`You dropped with data: ${JSON.stringify(data)}`);
+            },
+        },
+    });
+</script>
 </html>
