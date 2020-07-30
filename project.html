@@ -105,6 +105,14 @@
                     }
                 }
                 network = new vis.Network(container, nnData, options)
+                network.on('selectNode', () => {
+                    const selectedNodes = network.getSelectedNodes()
+                    this.selectedNodeID = selectedNodes[0]
+                    this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
+                    this.shortDescript = this.selectedAdvData.shortDescription
+                    this.title = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].label
+                    this.isEditMod = true
+                })
             },
             toggleAddMode() {
                 this.isAddModeActive = !this.isAddModeActive
