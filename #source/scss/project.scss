@@ -263,15 +263,32 @@ background-color: #f5f3f3;
 }
 .network__btnAddArrow {}
 .popap {
-	position: absolute;
+	position: fixed;
 	 left: 50%; top: 50%;
 	transform: translate(-50%, -50%);
    background: #ffffff; z-index: 99;
     display: flex;
-   flex-direction: column
+   flex-direction: column;
+	
+   min-width: 60%;
+   
 }
 .popap__red {
 	background-color: #fff;
+	height: 100%;
+	& button{  font-size: 1em;
+	align-self: center;
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	border-radius: 5px;
+	padding: 0.5em;
+	background-color: #12aff0;
+	margin: 1em 0 1em 0;
+	color: #fff;
+	}
 }
 .red {}
 .red__item {}
@@ -279,6 +296,21 @@ background-color: #f5f3f3;
 .popap__info {}
 .popap-info {}
 .popap-info__item {}
-.tabs__info2{
+.info-v2{
 	padding: 1em;
+	display: flex;
+	flex-direction: row;
+}
+.tabs-list-v2{
+	flex: 0 0 30%;
+}
+.tabs__choose{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+.btn__content{
+	width: 100%;
+	display: flex;
+	justify-content: center;
 }
