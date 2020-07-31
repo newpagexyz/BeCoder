@@ -154,10 +154,10 @@
                             </div>
                             <div v-else>
                                 <div v-if="isEditMod">
-                                    <div class="btn__content">
                                         <select v-model="selectedLinkTitle">
                                             <option v-for="node in allData.nodes">{{node.label}}</option>
                                         </select>
+                                    <div class="btn__content">
                                         <button @click="submitButtonHandler" class="popap_ok">Применить</button>
                                     </div>
                                 </div>
