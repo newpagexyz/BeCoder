@@ -47,15 +47,15 @@
                             <nav class="menu__body">
                                 <ul class="menu__list">
                                     <li><a href="" class="menu__link">Профиль</a></li>
-                                    <li><a href="" class="menu__link">Проекты</a></li>
                                     <li><a href="" class="menu__link">Статистика</a></li>
+                                    <li><a href="" class="menu__link">О проекте</a></li>
                                     <li><a href="" class="menu__link">Контакты</a></li>
-                                    <li><a href="" class="menu__link">Поиск</a></li>
-
                                 </ul>
                             </nav>
                         </div>
-                        <div class="nulllic"></div>
+                        <div class="nav__actions act-nav">
+                            <a class="act-nav__region"><span>поиск</span></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -84,22 +84,28 @@
                                     Редактировать
                                 </p>
                             </div>
+                            <p v-else @click="toggleEditMode">
+                                Редактировать
+                            </p>
                         </div>
-                        <hr>
-                        <div class="network">
-                            <div class="network__content">
-                                <div class="network__mynetwork">
-                                    <div id="mynetwork" class="network__mynetwork__item"></div>
-                                </div>
+                    </div>
+                    <hr>
+                    <div class="network">
+                        <div class="network__content">
+                            <div class="network__mynetwork">
+                                <div id="mynetwork" class="network__mynetwork__item" style="height: 400px"></div>
                             </div>
-                            <div v-if="isEditMod" class="network__btns">
-                                <button @click="toggleAddMode" class="network__btnAddObj">Добавить объект</button>
-                                <button @click="toggleAddEdgeMode" class="network__btnAddArrow">Соединить объекты</button>
-                            </div>
-                            <div id="popup" v-if="popupShowed" class="popap">
+                        </div>
+                        <div v-if="isEditMod" class="network__btns">
+                            <button @click="toggleAddMode" class="network__btnAddObj">Добавить объект+</button>
+                            <input type="radio" value="ellipse" v-model="picked"><label>Объект 1</label>
+                            <input type="radio" value="box" v-model="picked"><label>Объект 2</label>
+                            <button @click="toggleAddEdgeMode" class="network__btnAddArrow">Соединить объекты<==>
+                            </button>
+                        </div>
+                        <div id="popup" v-if="popupShowed" class="popap" style="z-index: 100; ">
+                            <div v-if="isSelectedObjectType[0]">
                                 <div v-if="isEditMod" class="popap__red red">
-
-                                    <div class="tabs__Htitle">Редактирование свойств объекта</div>
                                     <div class="tabs__info info-v2">
                                         <div class="tabs__list tabs-list tabs-list-v2">
                                             <div class="tabs-list__conent ">
@@ -109,33 +115,46 @@
                                             </div>
                                         </div>
                                         <div class="tabs__input tabs-input">
-                                            <div class="tabs-input__text1 tabs-input__item"><input type="text" v-model="label" placeholder="Заголовок" tabindex="1" v-model="selectedAdvData.shortDescription"></div>
-                                            <div class="tabs-input__text2 tabs-input__item"><input type="text" v-model="selectedAdvData.fullDescription" placeholder="Краткое описание" tabindex="2"></div>
-                                            <div class="tabs-input__text3 tabs-input__item"><input type="text" placeholder="Полное описание" tabindex="3"></div>
-                                            
+                                            <div class="tabs-input__text1 tabs-input__item"><input type="text" v-model="label" placeholder="Заголовок" tabindex="1" v-model="selectedAdvData.shortDescription">
+                                            </div>
+                                            <div class="tabs-input__text2 tabs-input__item"><input type="text" v-model="selectedAdvData.fullDescription" placeholder="Описание" tabindex="2"></div>
+                                            <div class="tabs-input__text3 tabs-input__item"><input type="text" placeholder="Описание" tabindex="3"></div>
+
                                         </div>
 
                                     </div>
-                                     <label class="tabs__choose">
-                                                <select v-model="typeOfBlock" tabindex="4">
-                                                    <option selected>Эллипс</option>
-                                                    <option>Квадрат</option>
-                                                </select>
-                                            </label>
-                                            <div class="btn__content">
-                                                <button @click="submitButtonHandler" class="popap_ok">Применить</button>
-                                            </div>
-                                    
+                                    <label class="tabs__choose">
+                                    <select v-model="typeOfBlock" tabindex="4">
+                                        <option selected>Эллипс</option>
+                                        <option>Квадрат</option>
+                                    </select>
+                                </label>
+                                    <div class="btn__content">
+                                        <button @click="submitButtonHandler" class="popap_ok">Применить</button>
+                                    </div>
+
                                 </div>
                                 <div v-else class="popap__info popap-info">
-
                                     <div class="popap-info__list">
                                         <p class="popap-info__item">{{label}}</p>
                                         <p class="popap-info__item">{{selectedAdvData.shortDescription}}</p>
                                         <p class="popap-info__item">{{selectedAdvData.fullDescription}}</p>
-                                        <p class="popap-info__item">{{(this.allData.nodes.filter(e => e.id == selectedNodeID)[0].shape == 'square')? 'Квадрат' : 'Эллипс'}}</p>
+                                        <p class="popap-info__item">{{(this.allData.nodes.filter(e => e.id == selectedNodeID)[0].shape == 'box')? 'Квадрат' : 'Эллипс'}}</p>
                                     </div>
                                     <button @click="closePopup" class="popap_ok">Назад</button>
+                                </div>
+                            </div>
+                            <div v-else>
+                                <div v-if="isEditMod">
+                                    <div class="btn__content">
+                                        <select v-model="selectedLinkTitle">
+                                            <option v-for="node in allData.nodes">{{node.label}}</option>
+                                        </select>
+                                        <button @click="submitButtonHandler" class="popap_ok">Применить</button>
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    <p @click="goToLinkPopup">{{allData.nodes.filter(e => e.id == selectedAdvData.link)[title]}}</p>
                                 </div>
                             </div>
                         </div>
@@ -160,9 +179,10 @@
                                 <div class="tabs-input__text3 tabs-input__item"><textarea placeholder="Полное описание" tabindex="3"></textarea></div>
                             </div>
                         </div>
-                        <div class="tabs__img">
-                            <img src="img/1.jpg" alt="">
-                            <input type="file">
+                        <div class="tabs__input tabs-input">
+                            <div class="tabs-input__text1 tabs-input__item"><input type="text" placeholder="Заголовок" tabindex="1" v-model="projectLabel"></div>
+                            <div class="tabs-input__text2 tabs-input__item"><input type="text" placeholder="Описание" tabindex="2" v-model="projectDescription"></div>
+                            <div class="tabs-input__text3 tabs-input__item"><textarea placeholder="Описание" tabindex="3"></textarea></div>
                         </div>
                     </div>
                     <div class="tabs__block" id="tab_03">
@@ -173,8 +193,16 @@
                         <hr>
                     </div>
                 </div>
+                <div class="tabs__block" id="tab_03">
+                    <div class="tabs__top">
+                        <div class="tabs__title">Участники</div>
+                        <div class="tabs__red">Редактировать</div>
+                    </div>
+                    <hr>
+                </div>
             </div>
         </div>
+    </div>
     </div>
 
 </body>
@@ -198,6 +226,8 @@
         el: '#app',
         data: {
             myID: "",
+            selectedLinkTitle: "",
+            isEditDescritionMod: false,
             projectDescription: "example",
             projectLabel: "example",
             projectFullDescription: "example",
@@ -210,6 +240,8 @@
             },
             selectedAdvData: {},
             isEditMod: false,
+            isSelectedObjectType: [false, false],
+            picked: 'ellipse',
             label: "",
             typeOfBlock: "Эллипс",
             nnData: {},
@@ -217,6 +249,19 @@
             previousJSON: ""
         },
         methods: {
+            goToLinkPopup() {
+                this.isEditMod = false
+                this.popupShowed = false
+                this.selectedNodeID = this.selectedAdvData.link
+                this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
+                this.popupShowed = true
+            },
+            toggleEditDescrition() {
+                this.isEditDescritionMod = !this.isEditDescritionMod
+                if (this.isEditDescritionMod) {
+                    this.fetchAllToServer()
+                }
+            },
             deleteSelected() {
                 network.deleteSelected()
             },
@@ -231,6 +276,8 @@
                     const a = this.allData.nodes.filter(b => b.id == i)[0]
                     a.advData.shortDescription = e.advData.shortDescription
                     a.advData.fullDescription = e.advData.fullDescription
+                    a.advData.typeOfBlock = e.advData.typeOfBlock
+                    a.advData.link = e.advData.link
                     a.label = e.label
                     a.shape = e.shape
                     a.x = e.x
@@ -266,12 +313,20 @@
                     manipulation: {
                         enabled: false,
                         addNode(nodeData, callback) {
-                            nodeData.label = that.newName
-                            nodeData.shape = 'ellipse'
+                            nodeData.label = ""
+                            nodeData.shape = that.picked
                             that.isAddModeActive = false
+                            let a = ""
+                            if (that.picked == 'ellipse') {
+                                a = "1"
+                            } else {
+                                a = "2"
+                            }
                             nodeData.advData = {
                                 shortDescription: "",
-                                fullDescription: ""
+                                fullDescription: "",
+                                typeOfBlock: a,
+                                link: ""
                             }
                             that.allData.nodes.push(nodeData)
                             callback(nodeData)
@@ -298,10 +353,18 @@
                     this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
                     this.label = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].label
 
+                    if (this.selectedAdvData.typeOfBlock == '1') {
+                        this.isSelectedObjectType = [true, false]
+                    }
+
+                    if (this.selectedAdvData.typeOfBlock == '2') {
+                        this.isSelectedObjectType = [false, true]
+                    }
+
                     switch (this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].shape) {
                         case "ellipse":
                             this.typeOfBlock = 'Эллипс';
-                        case "square":
+                        case "box":
                             this.typeOfBlock = 'Квадрат';
                     }
                 })
@@ -317,7 +380,14 @@
             },
             createProjectFromJSON(datastring) {
                 const newData = JSON.parse(datastring)
-                this.init(newData)
+                if (!newData.nodes) {
+                    this.init({
+                        nodes: [],
+                        edges: []
+                    })
+                } else {
+                    this.init(newData)
+                }
             },
             toggleAddMode() {
                 this.isAddModeActive = !this.isAddModeActive
@@ -339,7 +409,7 @@
                         }
                     case "Квадрат":
                         {
-                            shape = 'square';
+                            shape = 'box';
                             break;
                         }
                 }
@@ -351,7 +421,11 @@
                 })
                 selectedNode.advData.shortDescription = this.selectedAdvData.shortDescription
                 selectedNode.advData.fullDescription = this.selectedAdvData.fullDescription
+                selectedNode.advData.typeOfBlock = this.selectedAdvData.typeOfBlock
+
+                selectedNode.advData.link = this.allData.nodes.filter(e => e.label == selectedLinkTitle)[0]
                 selectedNode.label = this.label
+
 
                 this.sync()
                 this.closePopup()
@@ -364,8 +438,15 @@
                     this.allData.nodes.filter(e => e.id == i)[0].x = pos.x
                     this.allData.nodes.filter(e => e.id == i)[0].y = pos.y
                 })
-                const formBody = new FormData()
-                formBody.set("json", JSON.stringify(this.allData))
+                const formBody = new URLSearchParams({
+                    json: JSON.stringify(this.allData),
+                    id: this.myID
+                })
+                const formDescriptBody = new URLSearchParams({
+                    id: this.myID,
+                    name: this.projectLabel,
+                    description: this.projectDescription
+                })
                 fetch('https://becoder.newpage.xyz/api/send_json.php', {
                     method: 'POST',
                     headers: {
@@ -373,21 +454,43 @@
                     },
                     body: formBody
                 })
+                fetch('https://becoder.newpage.xyz/api/project_change.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formDescriptBody
+                })
             }
         },
         mounted() {
             this.myID = getQueryVariable("id")
-            fetch(`https://becoder.newpage.xyz/api/get_json.php?id=${this.myID}`)
-                .then(res => res.json())
-                .then(response => {
-                    this.init(response.json.nodes, response.json.edges)
-                })
-                .catch(e => {
-                    this.init({
-                        nodes: [],
-                        edges: []
+            if (!this.myID) {
+                fetch('https://becoder.newpage.xyz/api/create_json.php')
+                    .then(res => res.text())
+                    .then(resp => {
+                        this.myID = resp
+                        window.location.replace(`https://becoder.newpage.xyz/project.html?id=${resp}`)
                     })
-                })
+            } else {
+                fetch(`https://becoder.newpage.xyz/api/get_json.php?id=${this.myID}`)
+                    .then(resp => resp.text())
+                    .then(response => {
+                        this.createProjectFromJSON(response)
+                    })
+                    .catch(e => {
+                        this.init({
+                            nodes: [],
+                            edges: []
+                        })
+                    })
+                fetch(`https://becoder.newpage.xyz/api/project_info.php?id=${this.myID}`)
+                    .then(res => res.json())
+                    .then(resp => {
+                        this.projectLabel = resp.name
+                        this.projectDescription = resp.description
+                    })
+            }
         }
     })
 </script>
