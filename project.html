@@ -48,16 +48,16 @@
                         </div>
                         <nav class="menu__body">
                             <ul class="menu__list">
-                                <li><a href="" class="menu__link">Профиль</a></li>
-                                <li><a href="" class="menu__link">Статистика</a></li>
-                                <li><a href="" class="menu__link">О проекте</a></li>
-                                <li><a href="" class="menu__link">Контакты</a></li>
+                                <li><a href="index.php" class="menu__link">Профиль</a></li>
+                                <li><a href="index.php" class="menu__link">Проекты</a></li>
+                                <li><a href="#" class="menu__link">Статистика</a></li>
+                                <li><a href="#" class="menu__link">Контакты</a></li>
+                                <li><a href="/exit" class="menu__link">Выход</a></li>
+
                             </ul>
                         </nav>
                     </div>
-                    <div class="nav__actions act-nav">
-                        <a class="act-nav__region"><span>поиск</span></a>
-                    </div>
+                    <div class="nulllic"></div>
                 </div>
             </div>
         </div>
@@ -154,6 +154,10 @@
                             </div>
                             <div v-else>
                                 <div v-if="isEditMod">
+
+                                    <!-- РЕДАКТИРОВАНИЕ ССЫЛКИ -->
+
+                                    <input type="text" v-model="label">
                                     <select v-model="selectedLinkTitle">
                                         <option v-for="node in allData.nodes">{{node.label}}</option>
                                     </select>
@@ -162,6 +166,10 @@
                                     </div>
                                 </div>
                                 <div v-else>
+
+                                    <!-- ПРОСМОТР ССЫЛКИ -->
+
+                                    <p>{{allData.nodes.filter(e => e.id == selectedNodeID)[0].label}}</p>
                                     <p @click="goToLinkPopup">{{allData.nodes.filter(e => e.id ==
                                         selectedAdvData.link)[0]? allData.nodes.filter(e => e.id ==
                                         selectedAdvData.link)[0].label : 'Нет связей'}}</p>
@@ -269,11 +277,15 @@
         methods: {
             saveImage() {
                 const cnv = document.getElementById('secondCanvas')
-                const dataURL = cnv.toDataURL("image/jpeg");
+                const ctx = cnv.getContext('2d')
+                ctx.fillText(this.projectLabel, 20, ctx.canvas.height / 1.7)
+                ctx.fillText(this.projectDescription, ctx.canvas.width / 2, 390)
+                const dataURL = cnv.toDataURL("image/png");
                 const link = document.createElement("a");
                 link.href = dataURL;
                 link.download = "schema.jpg";
                 link.click();
+
             },
             goToLinkPopup() {
                 this.closePopup()
@@ -343,9 +355,14 @@
             redrawSecondCanvas() {
                 const primaryCanvas = document.getElementById('mynetwork').childNodes[0].childNodes[0]
                 const secondCanvas = document.getElementById('secondCanvas').getContext('2d')
-                secondCanvas.clearRect(0, 0, secondCanvas.canvas.width, secondCanvas.canvas.height);
+                secondCanvas.clearRect(0, 0, secondCanvas.canvas.width, secondCanvas.canvas.height)
 
-                secondCanvas.drawImage(primaryCanvas, -100, -100);
+                secondCanvas.drawImage(primaryCanvas, 0, -secondCanvas.canvas.height/2)
+                const img = new Image()
+                img.src = 'https://becoder.newpage.xyz/img/standartProject.jpg'
+                img.addEventListener('load', () => {
+                    secondCanvas.drawImage(img, 0, 50)
+                })
             },
             init(newData) {
                 const nnData = {
@@ -537,5 +554,9 @@
         }
     })
 </script>
-
+<style>
+    canvas {
+        background: white;
+    }
+</style>
 </html>
