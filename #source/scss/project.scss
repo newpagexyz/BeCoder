@@ -269,9 +269,9 @@ background-color: #f5f3f3;
    background: #ffffff; z-index: 99;
     display: flex;
    flex-direction: column;
-	
+	justify-content: space-between;
    min-width: 60%;
-   
+   min-height: 50%;
 }
 .popap__red {
 	background-color: #fff;
@@ -293,7 +293,21 @@ background-color: #f5f3f3;
 .red {}
 .red__item {}
 .popap_ok {}
-.popap__info {}
+.popap__info {
+	& button{  font-size: 1em;
+	align-self: center;
+	
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	border-radius: 5px;
+	padding: 0.5em;
+	background-color: #12aff0;
+	margin: 1em 0 1em 0;
+	color: #fff;
+	}
+}
 .popap-info {}
 .popap-info__item {}
 .info-v2{
@@ -314,3 +328,28 @@ background-color: #f5f3f3;
 	display: flex;
 	justify-content: center;
 }
+///
+.popap__info {
+	height: 100%;
+	width: 100%;
+	flex: 1 1 auto;
+	background-color: #fff;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+.popap-info__list{
+	
+	flex: 1 1 auto;
+	display: flex;flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+}
+.popap-info {}
+.popap-info__item {
+	font-size: 1.2em;
+	&:first-child{
+	font-size: 2em;
+	}
+}
+.popap_ok {}
