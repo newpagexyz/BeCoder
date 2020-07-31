@@ -69,7 +69,15 @@
   -ms-flex: 1 1 33.333%;
   flex: 1 1 33.333%;
   color: #000;
-  font-size: 1.5em; }
+  font-size: 1.5em;
+  -webkit-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  transition-duration: 0.5s; }
+
+.tabs__item:hover {
+  -webkit-transform: scale(1.05);
+  -ms-transform: scale(1.05);
+  transform: scale(1.05); }
 
 .tabs__body {
   padding: 1.5em 0 1.5em 0;
@@ -127,7 +135,10 @@
 .tabs__red {
   position: relative;
   font-size: 1em;
-  color: #7e8d90; }
+  color: #7e8d90;
+  -webkit-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  transition-duration: 0.5s; }
   .tabs__red:after {
     content: '';
     background: url();
@@ -136,6 +147,11 @@
     right: 0;
     width: 20px;
     height: 20px; }
+
+.tabs__red:hover {
+  -webkit-transform: scale(1.05);
+  -ms-transform: scale(1.05);
+  transform: scale(1.05); }
 
 .tabs__info {
   padding: 1em 3em;
@@ -201,6 +217,8 @@
     padding: 10px;
     background-color: #f5f3f3;
     width: 100%; }
+  .tabs-input__item input:hover, .tabs-input__item textarea:hover {
+    background-color: #e8dfdf; }
 
 .tabs-input__text1 {
   padding: 0.5em 0; }
@@ -269,6 +287,10 @@
     background-color: #12aff0;
     margin: 0 0 1em 0;
     color: #fff; }
+  .network__btns button:hover {
+    -webkit-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    transform: scale(1.05); }
 
 .network__btnAddObj {
   background-color: #f5f3f3; }
@@ -316,6 +338,10 @@
     background-color: #12aff0;
     margin: 1em 0 1em 0;
     color: #fff; }
+  .popap__red button:hover {
+    -webkit-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    transform: scale(1.05); }
 
 .popap__info button {
   font-size: 1em;
@@ -335,6 +361,11 @@
   background-color: #12aff0;
   margin: 1em 0 1em 0;
   color: #fff; }
+
+.popap__info button:hover {
+  -webkit-transform: scale(1.05);
+  -ms-transform: scale(1.05);
+  transform: scale(1.05); }
 
 .info-v2 {
   padding: 1em;
