@@ -150,6 +150,8 @@ form {
     padding: 10px;
     background-color: #f5f3f3;
     width: 100%; }
+  .tabs-input__item input:hover, .tabs-input__item textarea:hover {
+    background-color: #e8dfdf; }
 
 .tabs-input__text1 {
   padding: 0.5em 0; }
@@ -201,6 +203,10 @@ form {
     padding: 0.8em 1.5em 0.8em 1.5em;
     background-color: #12aff0;
     color: #fff; }
+  .submit input:hover {
+    -webkit-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    transform: scale(1.05); }
   .submit p {
     padding: 1em 0 0 0;
     font-size: 0.8em;
