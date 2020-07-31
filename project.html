@@ -162,7 +162,7 @@
                                     </div>
                                 </div>
                                 <div v-else>
-
+                                    <p @click="goToLinkPopup">{{allData.nodes.filter(e => e.id == selectedAdvData.link)[title]}}</p>
                                 </div>
                             </div>
                         </div>
@@ -253,6 +253,13 @@
             previousJSON: ""
         },
         methods: {
+            goToLinkPopup() {
+                this.isEditMod = false
+                this.popupShowed = false
+                this.selectedNodeID = this.selectedAdvData.link
+                this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
+                this.popupShowed = true
+            },
             toggleEditDescrition() {
                 this.isEditDescritionMod = !this.isEditDescritionMod
                 if (this.isEditDescritionMod) {
