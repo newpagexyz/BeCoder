@@ -153,7 +153,17 @@
                             </div>
                             </div>
                             <div v-else>
+                                <div v-if="isEditMod">
+                                    <div class="btn__content">
+                                        <select v-model="selectedLinkTitle">
+                                            <option v-for="node in allData.nodes">{{node.label}}</option>
+                                        </select>
+                                        <button @click="submitButtonHandler" class="popap_ok">Применить</button>
+                                    </div>
+                                </div>
+                                <div v-else>
 
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -220,6 +230,7 @@
         el: '#app',
         data: {
             myID: "",
+            selectedLinkTitle: "",
             isEditDescritionMod: false,
             projectDescription: "example",
             projectLabel: "example",
@@ -406,8 +417,10 @@
                 selectedNode.advData.shortDescription = this.selectedAdvData.shortDescription
                 selectedNode.advData.fullDescription = this.selectedAdvData.fullDescription
                 selectedNode.advData.typeOfBlock = this.selectedAdvData.typeOfBlock
-                selectedNode.advData.link = this.selectedAdvData.link
+
+                selectedNode.advData.link = this.allData.nodes.filter(e => e.label == selectedLinkTitle)[0]
                 selectedNode.label = this.label
+
 
                 this.sync()
                 this.closePopup()
