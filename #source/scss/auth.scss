@@ -154,6 +154,10 @@ font-size: 1.2em;
 	background-color: #f5f3f3;
 	width: 100%;
 	}
+	& input:hover, textarea:hover{
+	background-color: #e8dfdf;
+	
+	}
 
 }
 .tabs-input__text1 {
@@ -186,12 +190,16 @@ font-size: 1.2em;
 	align-items: center;
 	justify-content: center;
 	padding: 0 0 2em 0;
-	input{
+	& input{
 		border-radius: 6px;
 	padding: 0.8em 1.5em 0.8em 1.5em;
 	background-color: #12aff0;
 	color: #fff;
+	transition-duration: 0.5s;
 	}
+	& input:hover{
+	transform: scale(1.05);
+}
 	p{
 		padding: 1em 0 0 0;
 		font-size: 0.8em;
