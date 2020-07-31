@@ -79,10 +79,10 @@
                         </div>
                         <div class="tabs__input tabs-input">
                             <div class="tabs-input__text1 tabs-input__item"><input type="text" placeholder="Имя"
-                                                                                   tabindex="1" :readonly="isReadOnly"></div>
+                                                                                   tabindex="1" :readonly="isReadOnly" v-model="name"></div>
                             <div class="tabs-input__text2 tabs-input__item"><input type="text" placeholder="Фамилия"
-                                                                                   tabindex="2" :readonly="isReadOnly"></div>
-                            <div class="tabs-input__text3 tabs-input__item"><input type="email" placeholder="E-Mail"
+                                                                                   tabindex="2" :readonly="isReadOnly" v-model="surname"></div>
+                            <div class="tabs-input__text3 tabs-input__item"><input type="email" placeholder="E-Mail" v-model="email"
                                                                                       tabindex="3" :readonly="isReadOnly"></div>
                         </div>
                     </div>
@@ -104,7 +104,10 @@
         el: '#app',
         data: {
             isEditMod: false,
-            isReadOnly: true
+            isReadOnly: true,
+            name: "",
+            surname: "",
+            email: ""
         },
         methods: {
             toggleEditMode() {
