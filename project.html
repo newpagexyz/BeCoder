@@ -77,7 +77,7 @@
                             <div class="tabs__title">Блок-схема</div>
                             <div class="tabs__red">
                                 <div v-if="isEditMod">
-                                    <p @click="commitChanges">Приминить</p>
+                                    <p @click="commitChanges">Применить</p>
                                     <p @click="cancelChanges">Отменить</p>
                                 </div>
                                 <p v-else @click="toggleEditMode">
@@ -100,9 +100,9 @@
                                 <div v-if="isEditMod" class="popap__red red">
 
 
-                                    <div class="tabs__info2">
-                                        <div class="tabs__list tabs-list">
-                                            <div class="tabs-list__conent">
+                                    <div class="tabs__info info-v2">
+                                        <div class="tabs__list tabs-list tabs-list-v2">
+                                            <div class="tabs-list__conent ">
                                                 <div class="tabs-list__title tabs-list__item">Заголовок</div>
                                                 <div class="tabs-list__text tabs-list__item">Краткое описание</div>
                                                 <div class="tabs-list__textarea tabs-list__item">Полное описание</div>
@@ -112,29 +112,20 @@
                                             <div class="tabs-input__text1 tabs-input__item"><input type="text" v-model="label" placeholder="Заголовок" tabindex="1" v-model="selectedAdvData.shortDescription"></div>
                                             <div class="tabs-input__text2 tabs-input__item"><input type="text" v-model="selectedAdvData.fullDescription" placeholder="Описание" tabindex="2"></div>
                                             <div class="tabs-input__text3 tabs-input__item"><input type="text" placeholder="Описание" tabindex="3"></div>
-                                            <div class="tabs-input__text3 tabs-input__item">
-                                                <label class="red__item">
-                                <select v-model="typeOfBlock" tabindex="4">
-                                    <option selected>Эллипс</option>
-                                    <option>Квадрат</option>
-                                </select>
-                            </label>
-                                            </div>
+                                            
                                         </div>
+
                                     </div>
-
-
-
-                                    <input type="text" v-model="label" class="red__item">
-                                    <input type="text" v-model="selectedAdvData.shortDescription" class="red__item">
-                                    <input type="text" v-model="selectedAdvData.fullDescription" class="red__item">
-                                    <label class="red__item">
-                                <select v-model="typeOfBlock">
-                                    <option selected>Эллипс</option>
-                                    <option>Квадрат</option>
-                                </select>
-                            </label>
-                                    <button @click="submitButtonHandler" class="popap_ok">OK</button>
+                                     <label class="tabs__choose">
+                                                <select v-model="typeOfBlock" tabindex="4">
+                                                    <option selected>Эллипс</option>
+                                                    <option>Квадрат</option>
+                                                </select>
+                                            </label>
+                                            <div class="btn__content">
+                                                <button @click="submitButtonHandler" class="popap_ok">Применить</button>
+                                            </div>
+                                    
                                 </div>
                                 <div v-else class="popap__info popap-info">
                                     <p class="popap-info__item">{{label}}</p>
