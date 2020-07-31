@@ -72,11 +72,11 @@
                     <a href="#tab_03" class="tabs__item">Участники</a>
                 </nav>
                 <div class="tabs__body">
-                    <div class="tabs__block" id="tab_01">
+                    <div class="tabs__block tabs-block1" id="tab_01">
                         <div class="tabs__top">
                             <div class="tabs__title">Блок-схема</div>
                             <div class="tabs__red">
-                                <div v-if="isEditMod">
+                                <div v-if="isEditMod" class="tabs__reds">
                                     <p @click="commitChanges">Применить</p>
                                     <p @click="cancelChanges">Отменить</p>
                                 </div>
@@ -93,13 +93,13 @@
                                 </div>
                             </div>
                             <div v-if="isEditMod" class="network__btns">
-                                <button @click="toggleAddMode" class="network__btnAddObj">Добавить объект+</button>
-                                <button @click="toggleAddEdgeMode" class="network__btnAddArrow">Соединить объекты<==></button>
+                                <button @click="toggleAddMode" class="network__btnAddObj">Добавить объект</button>
+                                <button @click="toggleAddEdgeMode" class="network__btnAddArrow">Соединить объекты</button>
                             </div>
                             <div id="popup" v-if="popupShowed" class="popap">
                                 <div v-if="isEditMod" class="popap__red red">
 
-
+                                    <div class="tabs__Htitle">Редактирование свойств объекта</div>
                                     <div class="tabs__info info-v2">
                                         <div class="tabs__list tabs-list tabs-list-v2">
                                             <div class="tabs-list__conent ">
@@ -110,8 +110,8 @@
                                         </div>
                                         <div class="tabs__input tabs-input">
                                             <div class="tabs-input__text1 tabs-input__item"><input type="text" v-model="label" placeholder="Заголовок" tabindex="1" v-model="selectedAdvData.shortDescription"></div>
-                                            <div class="tabs-input__text2 tabs-input__item"><input type="text" v-model="selectedAdvData.fullDescription" placeholder="Описание" tabindex="2"></div>
-                                            <div class="tabs-input__text3 tabs-input__item"><input type="text" placeholder="Описание" tabindex="3"></div>
+                                            <div class="tabs-input__text2 tabs-input__item"><input type="text" v-model="selectedAdvData.fullDescription" placeholder="Краткое описание" tabindex="2"></div>
+                                            <div class="tabs-input__text3 tabs-input__item"><input type="text" placeholder="Полное описание" tabindex="3"></div>
                                             
                                         </div>
 
@@ -128,6 +128,7 @@
                                     
                                 </div>
                                 <div v-else class="popap__info popap-info">
+
                                     <div class="popap-info__list">
                                         <p class="popap-info__item">{{label}}</p>
                                         <p class="popap-info__item">{{selectedAdvData.shortDescription}}</p>
