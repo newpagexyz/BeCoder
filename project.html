@@ -96,13 +96,14 @@
                         </div>
                         <div v-if="isEditMod" class="network__btns">
                             <button @click="toggleAddMode" class="network__btnAddObj">Добавить объект+</button>
+                            <input type="radio" value="ellipse" v-model="picked"><label>Объект 1</label>
+                            <input type="radio" value="box" v-model="picked"><label>Объект 2</label>
                             <button @click="toggleAddEdgeMode" class="network__btnAddArrow">Соединить объекты<==>
                             </button>
                         </div>
                         <div id="popup" v-if="popupShowed" class="popap" style="z-index: 100; ">
+                            <div v-if="isSelectedObjectType[0]">
                             <div v-if="isEditMod" class="popap__red red">
-
-
                                 <div class="tabs__info info-v2">
                                     <div class="tabs__list tabs-list tabs-list-v2">
                                         <div class="tabs-list__conent ">
@@ -146,9 +147,13 @@
                                     <p class="popap-info__item">{{selectedAdvData.shortDescription}}</p>
                                     <p class="popap-info__item">{{selectedAdvData.fullDescription}}</p>
                                     <p class="popap-info__item">{{(this.allData.nodes.filter(e => e.id ==
-                                        selectedNodeID)[0].shape == 'square')? 'Квадрат' : 'Эллипс'}}</p>
+                                        selectedNodeID)[0].shape == 'box')? 'Квадрат' : 'Эллипс'}}</p>
                                 </div>
                                 <button @click="closePopup" class="popap_ok">Назад</button>
+                            </div>
+                            </div>
+                            <div v-else>
+
                             </div>
                         </div>
                     </div>
@@ -228,6 +233,8 @@
             },
             selectedAdvData: {},
             isEditMod: false,
+            isSelectedObjectType: [false, false],
+            picked: 'ellipse',
             label: "",
             typeOfBlock: "Эллипс",
             nnData: {},
@@ -237,7 +244,7 @@
         methods: {
             toggleEditDescrition() {
                 this.isEditDescritionMod = !this.isEditDescritionMod
-                if (!this.isEditDescritionMod) {
+                if (this.isEditDescritionMod) {
                     this.fetchAllToServer()
                 }
             },
@@ -255,6 +262,8 @@
                     const a = this.allData.nodes.filter(b => b.id == i)[0]
                     a.advData.shortDescription = e.advData.shortDescription
                     a.advData.fullDescription = e.advData.fullDescription
+                    a.advData.typeOfBlock = e.advData.typeOfBlock
+                    a.advData.link = e.advData.link
                     a.label = e.label
                     a.shape = e.shape
                     a.x = e.x
@@ -290,12 +299,20 @@
                     manipulation: {
                         enabled: false,
                         addNode(nodeData, callback) {
-                            nodeData.label = that.newName
-                            nodeData.shape = 'ellipse'
+                            nodeData.label = ""
+                            nodeData.shape = that.picked
                             that.isAddModeActive = false
+                            let a = ""
+                            if (that.picked == 'ellipse') {
+                                a = "1"
+                            } else {
+                                a = "2"
+                            }
                             nodeData.advData = {
                                 shortDescription: "",
-                                fullDescription: ""
+                                fullDescription: "",
+                                typeOfBlock: a,
+                                link: ""
                             }
                             that.allData.nodes.push(nodeData)
                             callback(nodeData)
@@ -321,11 +338,19 @@
                     this.selectedNodeID = selectedNodes[0]
                     this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
                     this.label = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].label
+                    
+                    if (this.selectedAdvData.typeOfBlock == '1') {
+                        this.isSelectedObjectType = [true, false]
+                    }
+                    
+                    if (this.selectedAdvData.typeOfBlock == '2') {
+                        this.isSelectedObjectType = [false, true]
+                    }
 
                     switch (this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].shape) {
                         case "ellipse":
                             this.typeOfBlock = 'Эллипс';
-                        case "square":
+                        case "box":
                             this.typeOfBlock = 'Квадрат';
                     }
                 })
@@ -368,7 +393,7 @@
                         break;
                     }
                     case "Квадрат": {
-                        shape = 'square';
+                        shape = 'box';
                         break;
                     }
                 }
@@ -380,6 +405,8 @@
                 })
                 selectedNode.advData.shortDescription = this.selectedAdvData.shortDescription
                 selectedNode.advData.fullDescription = this.selectedAdvData.fullDescription
+                selectedNode.advData.typeOfBlock = this.selectedAdvData.typeOfBlock
+                selectedNode.advData.link = this.selectedAdvData.link
                 selectedNode.label = this.label
 
                 this.sync()
