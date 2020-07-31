@@ -365,6 +365,7 @@
                 })
                 const formBody = new FormData()
                 formBody.set("json", JSON.stringify(this.allData))
+                formBody.set("id", this.myID)
                 fetch('https://becoder.newpage.xyz/api/send_json.php', {
                     method: 'POST',
                     headers: {
@@ -376,6 +377,23 @@
         },
         mounted() {
             this.myID = getQueryVariable("id")
+            if (!this.myID) {
+                fetch('https://becoder.newpage.xyz/api/create_json.php')
+                    .then(res => res.text())
+                    .then(resp => {
+                        this.myID = resp
+                        fetch(`https://becoder.newpage.xyz/api/get_json.php?id=${this.myID}`)
+                            .then(response => {
+                                this.createProjectFromJSON(response)
+                            })
+                            .catch(e => {
+                                this.init({
+                                    nodes: [],
+                                    edges: []
+                                })
+                            })
+                    })
+            }
             fetch(`https://becoder.newpage.xyz/api/get_json.php?id=${this.myID}`)
                 .then(response => {
                     this.createProjectFromJSON(response)

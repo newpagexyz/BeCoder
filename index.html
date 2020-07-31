@@ -151,13 +151,6 @@
                     .then(resp => windows.location.replace(`https://becoder.newpage.xyz/project.html?id=${resp}`))
             }
         },
-        mounted() {
-            fetch('https://becoder.newpage.xyz/api/my_projects.php')
-                .then(res => res.json())
-                .then(resp => {
-                    resp.forEach(el => this.projects.push({id: el}))
-                })
-        }
     })
     
 </script>
