@@ -45,8 +45,6 @@ font-weight: 400;
 	//max-width: $mw+1px;
 	margin: 0 auto;
 	padding: 1px 10px;
-	display: flex;
-	justify-content: center;
 	@media (max-width: $md3+1px) {
 		max-width: none;
 		padding: 0 10px;
@@ -62,15 +60,15 @@ font-weight: 400;
   top: 0;
   left: 0;
   width: 100%;
+  border-bottom: 1px solid #12aff0;
 
 	.nav__row {
-		align-self: center;
 		display: flex;
 		align-items: center;
 		justify-content: space-around;
 		height: 75px;
 		position: relative;
-		width: 75%;
+		padding: 0 5% 0 8%;
 
 		@media (max-width:  $md3+1px) {
 			height: 50px;
@@ -102,13 +100,10 @@ font-weight: 400;
 	.null{
 
 	}
-	.nulllic{
-		width: 100px;
-	}
 	.logo__list{
 		display: flex;
 		flex-direction: row;
-
+		
 	}
 	}
 	.nav__menu {
@@ -216,7 +211,7 @@ font-weight: 400;
 		display: flex;
 		justify-content: flex-end;
 		li{
-			margin: 0 30px/950px * 100%;;
+			margin: 0 30px/950px * 100%;
 		}
 		@media (max-width:  $md3+1px) {
 			flex-direction: column;
