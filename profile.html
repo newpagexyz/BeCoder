@@ -110,6 +110,16 @@
             toggleEditMode() {
                 this.isEditMod = !this.isEditMod
                 this.isReadOnly = !this.isReadOnly
+                if (this.isReadOnly) {
+                    this.submitData()
+                }
+            },
+            submitData() {
+                fetch('https://becoder.newpage.xyz')
+                /*
+                ОТПРАВКА ДАННЫХ
+
+                 */
             }
         }
     })
