@@ -50,11 +50,12 @@
 .tabs__content {
 
 }
+
 .tabs__items {
 	display: flex;
 	justify-content: center;
 	text-align: center;
-	padding: 1.5em;
+	padding: 1.2em;
 	
 	position: stiky;
 	background-color: #fff;
@@ -116,6 +117,9 @@ background: rgb(240,247,250);
 	top: -5px;
 	background-color:#00aff8;
 }
+.tabs-block1{
+	max-height: 100vh;
+}
 //////////
 .tabs__top {
 	display: flex;
@@ -125,7 +129,7 @@ background: rgb(240,247,250);
 	margin: 1em 2em;
 	padding: 1em 0 1em 0;
 }
-.tabs__title {
+.tabs__title,.tabs__Htitle{
 	font-size: 1.5em;
 }
 .tabs__red {
@@ -143,7 +147,15 @@ background: rgb(240,247,250);
 	color: #7e8d90;
 	transition-duration: 0.5s;
 }
-
+.tabs__reds{
+	display: flex;
+	align-items: center;
+	& p{
+		&:first-child{
+			padding:0  1em;
+		}
+	}
+}
 .tabs__red:hover{
 	transform: scale(1.05);
 }
@@ -244,7 +256,8 @@ font-size: 1.2em;
 	padding: 0 0 0.2em 0;
 }
 .network__mynetwork {
-margin: 1em;
+margin:  1em 2em;
+
 border: 1px solid #7e8d90;
 
 }
@@ -269,6 +282,9 @@ border: 1px solid #7e8d90;
 	background-color: #12aff0;
 	margin: 0 0 1em 0;
 	color: #fff;
+	&:first-child{
+		padding:  1em 2em;
+	}
 	}
 	& button:hover{
 	transform: scale(1.05);
@@ -285,7 +301,7 @@ background-color: #f5f3f3;
    background: #ffffff; z-index: 99;
     display: flex;
    flex-direction: column;
-	justify-content: space-between;
+	justify-content: space-around;
    min-width: 60%;
    min-height: 50%;
 }
@@ -300,7 +316,7 @@ background-color: #f5f3f3;
 	align-items: center;
 
 	border-radius: 5px;
-	padding: 0.5em;
+	padding: 0.5em 1em;
 	background-color: #12aff0;
 	margin: 1em 0 1em 0;
 	color: #fff;
@@ -311,6 +327,12 @@ background-color: #f5f3f3;
 }
 .red {}
 .red__item {}
+.tabs__Htitle{
+	text-align: center;
+	border-bottom: 1px solid #7e8d90;
+	margin:2em  2em 0 2em;
+	padding-bottom: 1em;
+}
 .popap_ok {}
 .popap__info {
 	& button{  font-size: 1em;
@@ -321,7 +343,7 @@ background-color: #f5f3f3;
 	align-items: center;
 
 	border-radius: 5px;
-	padding: 0.5em;
+	padding: 0.5em 1em;
 	background-color: #12aff0;
 	margin: 1em 0 1em 0;
 	color: #fff;
@@ -333,17 +355,19 @@ background-color: #f5f3f3;
 .popap-info {}
 .popap-info__item {}
 .info-v2{
-	padding: 1em;
+	padding: 2em;
+	padding-bottom: 1em;
 	display: flex;
 	flex-direction: row;
 }
 .tabs-list-v2{
-	flex: 0 0 30%;
+	flex: 0 0 140px;
 }
 .tabs__choose{
 	width: 100%;
 	display: flex;
 	justify-content: center;
+	margin: 0 0 1em 0;
 }
 .btn__content{
 	width: 100%;
@@ -363,12 +387,11 @@ background-color: #f5f3f3;
 .popap-info__list{
 
 	flex: 1 1 auto;
-	display: flex;flex-direction: column;
-	justify-content: space-around;
-	align-items: center;
+	text-align: center;
 }
 .popap-info {}
 .popap-info__item {
+	padding: 1em -0px;
 	font-size: 1.2em;
 	&:first-child{
 	font-size: 2em;
