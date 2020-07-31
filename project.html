@@ -257,8 +257,10 @@
                 this.closePopup()
                 this.popupShowed = false
                 this.selectedNodeID = this.selectedAdvData.link
-                this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
+                const selectedNode = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0]
 
+                this.selectedAdvData = selectedNode.advData
+                this.label = selectedNode.label
 
                 if (this.selectedAdvData.typeOfBlock == '1') {
                     this.isSelectedObjectType = [true, false]

@@ -118,11 +118,20 @@
                 }
             },
             submitData() {
-                fetch('https://becoder.newpage.xyz')
-                /*
-                ОТПРАВКА ДАННЫХ
-
-                 */
+                const body = new URLSearchParams(
+                    {
+                        name: this.name,
+                        surname: this.surname,
+                        email: this.email
+                    }
+                )
+                fetch('https://becoder.newpage.xyz/api/change_profile.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: body
+                })
             }
         }
     })
