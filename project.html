@@ -156,7 +156,8 @@
                 <div class="tabs__block" id="tab_02">
                     <div class="tabs__top">
                         <div class="tabs__title">Описание</div>
-                        <div class="tabs__red">Редактировать</div>
+                        <div v-if="isEditDescritionMod" class="tabs__red" @click="toggleEditDescrition">Редактировать</div>
+                        <div v-else class="tabs__red" @click="toggleEditDescrition">OK</div>
                     </div>
                     <hr>
                     <div class="tabs__info">
@@ -169,9 +170,9 @@
                         </div>
                         <div class="tabs__input tabs-input">
                             <div class="tabs-input__text1 tabs-input__item"><input type="text" placeholder="Заголовок"
-                                                                                   tabindex="1"></div>
+                                                                                   tabindex="1" v-model="projectLabel"></div>
                             <div class="tabs-input__text2 tabs-input__item"><input type="text" placeholder="Описание"
-                                                                                   tabindex="2"></div>
+                                                                                   tabindex="2" v-model="projectDescription"></div>
                             <div class="tabs-input__text3 tabs-input__item"><textarea placeholder="Описание"
                                                                                       tabindex="3"></textarea></div>
                         </div>
@@ -214,6 +215,7 @@
         el: '#app',
         data: {
             myID: "",
+            isEditDescritionMod: false,
             projectDescription: "example",
             projectLabel: "example",
             projectFullDescription: "example",
@@ -233,6 +235,12 @@
             previousJSON: ""
         },
         methods: {
+            toggleEditDescrition() {
+                this.isEditDescritionMod = !this.isEditDescritionMod
+                if (!this.isEditDescritionMod) {
+                    this.fetchAllToServer()
+                }
+            },
             deleteSelected() {
                 network.deleteSelected()
             },
@@ -333,7 +341,14 @@
             },
             createProjectFromJSON(datastring) {
                 const newData = JSON.parse(datastring)
-                this.init(newData)
+                if (!newData.nodes) {
+                    this.init({
+                        nodes: [],
+                        edges: []
+                    })
+                } else {
+                    this.init(newData)
+                }
             },
             toggleAddMode() {
                 this.isAddModeActive = !this.isAddModeActive
@@ -382,12 +397,24 @@
                     json: JSON.stringify(this.allData),
                     id: this.myID
                 })
+                const formDescriptBody = new URLSearchParams({
+                    id: this.myID,
+                    name: this.projectLabel,
+                    description: this.projectDescription
+                })
                 fetch('https://becoder.newpage.xyz/api/send_json.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     body: formBody
+                })
+                fetch('https://becoder.newpage.xyz/api/project_change.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: formDescriptBody
                 })
             }
         },
@@ -398,16 +425,7 @@
                     .then(res => res.text())
                     .then(resp => {
                         this.myID = resp
-                        fetch(`https://becoder.newpage.xyz/api/get_json.php?id=${this.myID}`)
-                            .then(response => {
-                                this.createProjectFromJSON(response)
-                            })
-                            .catch(e => {
-                                this.init({
-                                    nodes: [],
-                                    edges: []
-                                })
-                            })
+                        window.location.replace(`https://becoder.newpage.xyz/project.html?id=${resp}`)
                     })
             } else {
                 fetch(`https://becoder.newpage.xyz/api/get_json.php?id=${this.myID}`)
@@ -420,6 +438,12 @@
                             nodes: [],
                             edges: []
                         })
+                    })
+                fetch(`https://becoder.newpage.xyz/api/project_info.php?id=${this.myID}`)
+                    .then(res => res.json())
+                    .then(resp => {
+                        this.projectLabel = resp.name
+                        this.projectDescription = resp.description
                     })
             }
         }
