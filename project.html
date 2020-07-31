@@ -343,6 +343,7 @@
             redrawSecondCanvas() {
                 const primaryCanvas = document.getElementById('mynetwork').childNodes[0].childNodes[0]
                 const secondCanvas = document.getElementById('secondCanvas').getContext('2d')
+                secondCanvas.clearRect(0, 0, secondCanvas.canvas.width, secondCanvas.canvas.height);
 
                 secondCanvas.drawImage(primaryCanvas, -100, -100);
             },
