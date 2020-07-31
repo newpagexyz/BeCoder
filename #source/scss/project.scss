@@ -60,12 +60,18 @@
 	background-color: #fff;
 
 
+
 }
 .tabs__item {
 	flex: 1 1 33.333%;
 	color: #000;
 	font-size: 1.5em;
+	transition-duration: 0.5s;
 }
+.tabs__item:hover{
+	transform: scale(1.05);
+}
+
 .tabs__body {
 	padding: 1.5em 0 1.5em 0;
 	width: 100%;
@@ -135,9 +141,12 @@ background: rgb(240,247,250);
 	height: 20px;
 	}
 	color: #7e8d90;
+	transition-duration: 0.5s;
 }
 
-
+.tabs__red:hover{
+	transform: scale(1.05);
+}
 //
 .tabs__info {
 	padding: 1em 3em;
@@ -198,6 +207,10 @@ font-size: 1.2em;
 	background-color: #f5f3f3;
 	width: 100%;
 	}
+	& input:hover, textarea:hover{
+	background-color: #e8dfdf;
+	
+	}
 
 }
 .tabs-input__text1 {
@@ -257,6 +270,9 @@ border: 1px solid #7e8d90;
 	margin: 0 0 1em 0;
 	color: #fff;
 	}
+	& button:hover{
+	transform: scale(1.05);
+}
 }
 .network__btnAddObj {
 background-color: #f5f3f3;
@@ -289,6 +305,9 @@ background-color: #f5f3f3;
 	margin: 1em 0 1em 0;
 	color: #fff;
 	}
+	& button:hover{
+	transform: scale(1.05);
+}
 }
 .red {}
 .red__item {}
@@ -307,6 +326,9 @@ background-color: #f5f3f3;
 	margin: 1em 0 1em 0;
 	color: #fff;
 	}
+	& button:hover{
+	transform: scale(1.05);
+}
 }
 .popap-info {}
 .popap-info__item {}
@@ -339,7 +361,7 @@ background-color: #f5f3f3;
 	justify-content: space-around;
 }
 .popap-info__list{
-	
+
 	flex: 1 1 auto;
 	display: flex;flex-direction: column;
 	justify-content: space-around;
