@@ -162,7 +162,7 @@
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <p @click="goToLinkPopup">{{allData.nodes.filter(e => e.id == selectedAdvData.link)[title]}}</p>
+                                    <p @click="goToLinkPopup">{{allData.nodes.filter(e => e.id == selectedAdvData.link)[0]? allData.nodes.filter(e => e.id == selectedAdvData.link)[0].label : 'Нет связей'}}</p>
                                 </div>
                             </div>
                         </div>
@@ -254,11 +254,27 @@
         },
         methods: {
             goToLinkPopup() {
-                this.isEditMod = false
+                this.closePopup()
                 this.popupShowed = false
                 this.selectedNodeID = this.selectedAdvData.link
                 this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
-                this.popupShowed = true
+
+
+                if (this.selectedAdvData.typeOfBlock == '1') {
+                    this.isSelectedObjectType = [true, false]
+                }
+
+                if (this.selectedAdvData.typeOfBlock == '2') {
+                    this.isSelectedObjectType = [false, true]
+                }
+
+                switch (this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].shape) {
+                    case "ellipse":
+                        this.typeOfBlock = 'Эллипс';
+                    case "box":
+                        this.typeOfBlock = 'Квадрат';
+                }
+                this.showPopup()
             },
             toggleEditDescrition() {
                 this.isEditDescritionMod = !this.isEditDescritionMod
@@ -351,11 +367,12 @@
                     }
                 }
                 network = new vis.Network(container, nnData, options)
-                network.on('selectNode', () => {
-                    const selectedNodes = network.getSelectedNodes()
-                    this.selectedNodeID = selectedNodes[0]
-                    this.selectedAdvData = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].advData
-                    this.label = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0].label
+                network.on('doubleClick', (eventObject) => {
+                    const selectedNodeId = eventObject.nodes[0]
+                    this.selectedNodeID = selectedNodeId
+                    const selectedNode = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0]
+                    this.selectedAdvData = selectedNode.advData
+                    this.label = selectedNode.label
                     
                     if (this.selectedAdvData.typeOfBlock == '1') {
                         this.isSelectedObjectType = [true, false]
@@ -371,16 +388,9 @@
                         case "box":
                             this.typeOfBlock = 'Квадрат';
                     }
+                    this.showPopup()
                 })
 
-                network.on('doubleClick', (eventObject) => {
-                    const selectedNodeId = eventObject.nodes[0]
-                    const selectedNode = that.allData.nodes.filter(e => e.id == selectedNodeId)[0]
-
-                    that.selectedAdvData = selectedNode.advData
-                    that.label = selectedNode.label
-                    that.showPopup()
-                })
             },
             createProjectFromJSON(datastring) {
                 const newData = JSON.parse(datastring)
@@ -425,7 +435,7 @@
                 selectedNode.advData.fullDescription = this.selectedAdvData.fullDescription
                 selectedNode.advData.typeOfBlock = this.selectedAdvData.typeOfBlock
 
-                selectedNode.advData.link = this.allData.nodes.filter(e => e.label == selectedLinkTitle)[0]
+                selectedNode.advData.link = this.allData.nodes.filter(e => e.label == this.selectedLinkTitle)[0].id
                 selectedNode.label = this.label
 
 
