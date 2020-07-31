@@ -19,7 +19,7 @@ h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit;}
 /*--------------------*/
 
 $minwidth: 320px;
-$mw: 970px;
+$mw: 1200px;
 $md1: $mw+12;
 $md2: 991.98;
 $md3: 767.98;
@@ -42,9 +42,11 @@ font-weight: 400;
 	}
 }
 .container{
-	max-width: $mw+1px;
+	//max-width: $mw+1px;
 	margin: 0 auto;
 	padding: 1px 10px;
+	display: flex;
+	justify-content: center;
 	@media (max-width: $md3+1px) {
 		max-width: none;
 		padding: 0 10px;
@@ -62,11 +64,13 @@ font-weight: 400;
   width: 100%;
 
 	.nav__row {
+		align-self: center;
 		display: flex;
 		align-items: center;
+		justify-content: space-around;
 		height: 75px;
 		position: relative;
-		
+		width: 75%;
 
 		@media (max-width:  $md3+1px) {
 			height: 50px;
@@ -78,8 +82,8 @@ font-weight: 400;
 
 & img{
 
-		width: 100px;
-		height: 100px;
+		width: 80px;
+		height: 60px;
 		}
 
 
@@ -94,6 +98,12 @@ font-weight: 400;
 	}
 	.logo__title{
 		
+	}
+	.null{
+
+	}
+	.nulllic{
+		width: 100px;
 	}
 	.logo__list{
 		display: flex;
@@ -204,7 +214,7 @@ font-weight: 400;
 	&__list {
 
 		display: flex;
-		justify-content: center;
+		justify-content: flex-end;
 		li{
 			margin: 0 30px/950px * 100%;;
 		}
@@ -228,7 +238,7 @@ font-weight: 400;
 
 	color: #000;
 	
-	font-size: 14px;
+	font-size: 20px;
 	font-weight: 400;
 	line-height: 21px;
 	

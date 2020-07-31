@@ -78,9 +78,14 @@ body {
   flex-direction: column; }
 
 .container {
-  max-width: 971px;
   margin: 0 auto;
-  padding: 1px 10px; }
+  padding: 1px 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center; }
   @media (max-width: 768.98px) {
     .container {
       max-width: none;
@@ -94,14 +99,19 @@ body {
   left: 0;
   width: 100%; }
   .nav .nav__row {
+    -ms-flex-item-align: center;
+    align-self: center;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
     height: 75px;
-    position: relative; }
+    position: relative;
+    width: 75%; }
     @media (max-width: 768.98px) {
       .nav .nav__row {
         height: 50px;
@@ -111,8 +121,8 @@ body {
   .nav .nav__logo {
     z-index: 2; }
     .nav .nav__logo img {
-      width: 100px;
-      height: 100px; }
+      width: 80px;
+      height: 60px; }
     @media (max-width: 768.98px) {
       .nav .nav__logo {
         position: absolute;
@@ -121,6 +131,8 @@ body {
         -webkit-transform: translate(-50%, -50%);
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%); } }
+    .nav .nav__logo .nulllic {
+      width: 100px; }
     .nav .nav__logo .logo__list {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -206,9 +218,9 @@ body {
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      justify-content: center; }
+      -webkit-box-pack: end;
+      -ms-flex-pack: end;
+      justify-content: flex-end; }
       .nav .menu__list li {
         margin: 0 3.15789%; }
       @media (max-width: 768.98px) {
@@ -227,7 +239,7 @@ body {
               margin-top: 30px; } }
     .nav .menu__link, .nav .act-nav__region {
       color: #000;
-      font-size: 14px;
+      font-size: 20px;
       font-weight: 400;
       line-height: 21px;
       /* Text style for "Главная" */
