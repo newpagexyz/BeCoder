@@ -360,9 +360,8 @@
         mounted() {
             this.myID = getQueryVariable("id")
             fetch(`https://becoder.newpage.xyz/api/get_json.php?id=${this.myID}`)
-                .then(res => res.json())
                 .then(response => {
-                    this.init(response.json.nodes, response.json.edges)
+                    this.createProjectFromJSON(response)
                 })
                 .catch(e => {
                     this.init({nodes: [], edges: []})
