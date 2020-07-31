@@ -69,9 +69,9 @@
 
         <div class="tabs__content">
             <nav class="tabs__items">
-                <a href="#tab_01" class="tabs__item">Структура</a>
-                <a href="#tab_02" class="tabs__item">Описание</a>
-                <a href="#tab_03" class="tabs__item">Участники</a>
+                <a href="#tab_01" @mousedown="redrawSecondCanvas" class="tabs__item">Структура</a>
+                <a href="#tab_02" @mousedown="redrawSecondCanvas" class="tabs__item">Описание</a>
+                <a href="#tab_03" @mousedown="redrawSecondCanvas" class="tabs__item">Просмотр</a>
             </nav>
             <div class="tabs__body">
                 <div class="tabs__block" id="tab_01">
@@ -103,66 +103,68 @@
                         </div>
                         <div id="popup" v-if="popupShowed" class="popap" style="z-index: 100; ">
                             <div v-if="isSelectedObjectType[0]">
-                            <div v-if="isEditMod" class="popap__red red">
-                                <div class="tabs__info info-v2">
-                                    <div class="tabs__list tabs-list tabs-list-v2">
-                                        <div class="tabs-list__conent ">
-                                            <div class="tabs-list__title tabs-list__item">Заголовок</div>
-                                            <div class="tabs-list__text tabs-list__item">Краткое описание</div>
-                                            <div class="tabs-list__textarea tabs-list__item">Полное описание</div>
+                                <div v-if="isEditMod" class="popap__red red">
+                                    <div class="tabs__info info-v2">
+                                        <div class="tabs__list tabs-list tabs-list-v2">
+                                            <div class="tabs-list__conent ">
+                                                <div class="tabs-list__title tabs-list__item">Заголовок</div>
+                                                <div class="tabs-list__text tabs-list__item">Краткое описание</div>
+                                                <div class="tabs-list__textarea tabs-list__item">Полное описание</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="tabs__input tabs-input">
-                                        <div class="tabs-input__text1 tabs-input__item"><input type="text"
-                                                                                               v-model="label"
-                                                                                               placeholder="Заголовок"
-                                                                                               tabindex="1"
-                                                                                               v-model="selectedAdvData.shortDescription">
+                                        <div class="tabs__input tabs-input">
+                                            <div class="tabs-input__text1 tabs-input__item"><input type="text"
+                                                                                                   v-model="label"
+                                                                                                   placeholder="Заголовок"
+                                                                                                   tabindex="1"
+                                                                                                   v-model="selectedAdvData.shortDescription">
+                                            </div>
+                                            <div class="tabs-input__text2 tabs-input__item"><input type="text"
+                                                                                                   v-model="selectedAdvData.fullDescription"
+                                                                                                   placeholder="Описание"
+                                                                                                   tabindex="2"></div>
+                                            <div class="tabs-input__text3 tabs-input__item"><input type="text"
+                                                                                                   placeholder="Описание"
+                                                                                                   tabindex="3"></div>
+
                                         </div>
-                                        <div class="tabs-input__text2 tabs-input__item"><input type="text"
-                                                                                               v-model="selectedAdvData.fullDescription"
-                                                                                               placeholder="Описание"
-                                                                                               tabindex="2"></div>
-                                        <div class="tabs-input__text3 tabs-input__item"><input type="text"
-                                                                                               placeholder="Описание"
-                                                                                               tabindex="3"></div>
 
+                                    </div>
+                                    <label class="tabs__choose">
+                                        <select v-model="typeOfBlock" tabindex="4">
+                                            <option selected>Эллипс</option>
+                                            <option>Квадрат</option>
+                                        </select>
+                                    </label>
+                                    <div class="btn__content">
+                                        <button @click="submitButtonHandler" class="popap_ok">Применить</button>
                                     </div>
 
                                 </div>
-                                <label class="tabs__choose">
-                                    <select v-model="typeOfBlock" tabindex="4">
-                                        <option selected>Эллипс</option>
-                                        <option>Квадрат</option>
-                                    </select>
-                                </label>
-                                <div class="btn__content">
-                                    <button @click="submitButtonHandler" class="popap_ok">Применить</button>
+                                <div v-else class="popap__info popap-info">
+                                    <div class="popap-info__list">
+                                        <p class="popap-info__item">{{label}}</p>
+                                        <p class="popap-info__item">{{selectedAdvData.shortDescription}}</p>
+                                        <p class="popap-info__item">{{selectedAdvData.fullDescription}}</p>
+                                        <p class="popap-info__item">{{(this.allData.nodes.filter(e => e.id ==
+                                            selectedNodeID)[0].shape == 'box')? 'Квадрат' : 'Эллипс'}}</p>
+                                    </div>
+                                    <button @click="closePopup" class="popap_ok">Назад</button>
                                 </div>
-
-                            </div>
-                            <div v-else class="popap__info popap-info">
-                                <div class="popap-info__list">
-                                    <p class="popap-info__item">{{label}}</p>
-                                    <p class="popap-info__item">{{selectedAdvData.shortDescription}}</p>
-                                    <p class="popap-info__item">{{selectedAdvData.fullDescription}}</p>
-                                    <p class="popap-info__item">{{(this.allData.nodes.filter(e => e.id ==
-                                        selectedNodeID)[0].shape == 'box')? 'Квадрат' : 'Эллипс'}}</p>
-                                </div>
-                                <button @click="closePopup" class="popap_ok">Назад</button>
-                            </div>
                             </div>
                             <div v-else>
                                 <div v-if="isEditMod">
-                                        <select v-model="selectedLinkTitle">
-                                            <option v-for="node in allData.nodes">{{node.label}}</option>
-                                        </select>
+                                    <select v-model="selectedLinkTitle">
+                                        <option v-for="node in allData.nodes">{{node.label}}</option>
+                                    </select>
                                     <div class="btn__content">
                                         <button @click="submitButtonHandler" class="popap_ok">Применить</button>
                                     </div>
                                 </div>
                                 <div v-else>
-                                    <p @click="goToLinkPopup">{{allData.nodes.filter(e => e.id == selectedAdvData.link)[0]? allData.nodes.filter(e => e.id == selectedAdvData.link)[0].label : 'Нет связей'}}</p>
+                                    <p @click="goToLinkPopup">{{allData.nodes.filter(e => e.id ==
+                                        selectedAdvData.link)[0]? allData.nodes.filter(e => e.id ==
+                                        selectedAdvData.link)[0].label : 'Нет связей'}}</p>
                                 </div>
                             </div>
                         </div>
@@ -171,7 +173,8 @@
                 <div class="tabs__block" id="tab_02">
                     <div class="tabs__top">
                         <div class="tabs__title">Описание</div>
-                        <div v-if="isEditDescritionMod" class="tabs__red" @click="toggleEditDescrition">Редактировать</div>
+                        <div v-if="isEditDescritionMod" class="tabs__red" @click="toggleEditDescrition">Редактировать
+                        </div>
                         <div v-else class="tabs__red" @click="toggleEditDescrition">OK</div>
                     </div>
                     <hr>
@@ -185,9 +188,11 @@
                         </div>
                         <div class="tabs__input tabs-input">
                             <div class="tabs-input__text1 tabs-input__item"><input type="text" placeholder="Заголовок"
-                                                                                   tabindex="1" v-model="projectLabel"></div>
+                                                                                   tabindex="1" v-model="projectLabel">
+                            </div>
                             <div class="tabs-input__text2 tabs-input__item"><input type="text" placeholder="Описание"
-                                                                                   tabindex="2" v-model="projectDescription"></div>
+                                                                                   tabindex="2"
+                                                                                   v-model="projectDescription"></div>
                             <div class="tabs-input__text3 tabs-input__item"><textarea placeholder="Описание"
                                                                                       tabindex="3"></textarea></div>
                         </div>
@@ -199,8 +204,17 @@
                 </div>
                 <div class="tabs__block" id="tab_03">
                     <div class="tabs__top">
-                        <div class="tabs__title">Участники</div>
-                        <div class="tabs__red">Редактировать</div>
+                        <div class="tabs__title">Просмотр</div>
+                        <div class="tabs__red"></div>
+                    </div>
+                    <div class="tabs__info" style="height: 40rem; display: flex; flex-direction: column">
+                        <canvas height="1200px" width="1200px" id="secondCanvas"></canvas>
+                        <div>
+                            <p>{{projectLabel}}</p>
+                            <p>{{projectDescription}}</p>
+                            <p>{{projectFullDescription}}</p>
+                            <button @click="saveImage">Save Image</button>
+                        </div>
                     </div>
                     <hr>
                 </div>
@@ -253,6 +267,14 @@
             previousJSON: ""
         },
         methods: {
+            saveImage() {
+                const cnv = document.getElementById('secondCanvas')
+                const dataURL = cnv.toDataURL("image/jpeg");
+                const link = document.createElement("a");
+                link.href = dataURL;
+                link.download = "schema.jpg";
+                link.click();
+            },
             goToLinkPopup() {
                 this.closePopup()
                 this.popupShowed = false
@@ -318,6 +340,12 @@
                 this.init(JSON.parse(this.previousJSON))
                 this.isEditMod = false
             },
+            redrawSecondCanvas() {
+                const primaryCanvas = document.getElementById('mynetwork').childNodes[0].childNodes[0]
+                const secondCanvas = document.getElementById('secondCanvas').getContext('2d')
+
+                secondCanvas.drawImage(primaryCanvas, -100, -100);
+            },
             init(newData) {
                 const nnData = {
                     nodes: new vis.DataSet(newData.nodes),
@@ -375,11 +403,11 @@
                     const selectedNode = this.allData.nodes.filter(e => e.id == this.selectedNodeID)[0]
                     this.selectedAdvData = selectedNode.advData
                     this.label = selectedNode.label
-                    
+
                     if (this.selectedAdvData.typeOfBlock == '1') {
                         this.isSelectedObjectType = [true, false]
                     }
-                    
+
                     if (this.selectedAdvData.typeOfBlock == '2') {
                         this.isSelectedObjectType = [false, true]
                     }
