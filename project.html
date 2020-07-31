@@ -127,12 +127,14 @@
                                             </div>
                                     
                                 </div>
-                                <div v-else class="popap__info popap-info">
-                                    <p class="popap-info__item">{{label}}</p>
-                                    <p class="popap-info__item">{{selectedAdvData.shortDescription}}</p>
-                                    <p class="popap-info__item">{{selectedAdvData.fullDescription}}</p>
-                                    <p class="popap-info__item">{{(this.allData.nodes.filter(e => e.id == selectedNodeID)[0].shape == 'square')? 'Квадрат' : 'Эллипс'}}</p>
-                                    <button @click="closePopup" class="popap_ok">OK</button>
+                                <div v-else class="popap__info">
+                                    <div class="popap-info__list">
+                                        <p class="popap-info__item">{{label}}</p>
+                                        <p class="popap-info__item">{{selectedAdvData.shortDescription}}</p>
+                                        <p class="popap-info__item">{{selectedAdvData.fullDescription}}</p>
+                                        <p class="popap-info__item">{{(this.allData.nodes.filter(e => e.id == selectedNodeID)[0].shape == 'square')? 'Квадрат' : 'Эллипс'}}</p>
+                                    </div>
+                                    <button @click="closePopup" class="popap_ok">Назад</button>
                                 </div>
                             </div>
                         </div>
