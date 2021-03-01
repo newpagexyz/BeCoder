@@ -24,15 +24,15 @@ include_once "module/header.php";
                 </div>
                 <nav class="menu__body">
                     <ul class="menu__list">
-                        <li><a href="" class="menu__link">Профиль</a></li>
-                        <li><a href="" class="menu__link">Статистика</a></li>
-                        <li><a href="" class="menu__link">О проекте</a></li>
-                        <li><a href="" class="menu__link">Контакты</a></li>
+                        <li><a href="/profile/" class="menu__link">Профиль</a></li>
+                        <li><a href="#" class="menu__link">Проекты</a></li>
+                        <li><a href="#" class="menu__link">Статистика</a></li>
+                        <li><a href="#" class="menu__link">Контакты</a></li>
                     </ul>
                 </nav>
             </div>
             <div class="nav__actions act-nav">
-               <a class="act-nav__region"><span>поиск</span></a>
+               <a class="act-nav__region"><span>Выход</span></a>
             </div>
     </div>
     </div>
@@ -41,7 +41,10 @@ include_once "module/header.php";
             <div class="info__lk lk">
                 <div class="lk__content">
                     <div class="lk__img">
-                        <img src="img/foto.jpg" alt="" >
+                      <?php
+                      if($ui['photo']){?>
+                      <img src="../user_images/<?php echo $ui['photo'];?>" alt="">
+                    <?php }else{ echo '<img src="img/foto.jpg" alt="" >'; } ?>
                     </div>
                     <div class="lk__name name">
                         <div class="name__contennt">
@@ -103,7 +106,7 @@ include_once "module/header.php";
                                     <div class="button"><a href="project.html?id='.$val['id'].'">Перейти к проекту</a></div>
                                     <div class="menu_proj">
                                         <div class="menu_proj__content">
-                                            <div class="punkt1">Редактировать</div>
+                                            
                                             <div class="punkt2"><a href="drop?id='.$val['id'].'">Удалить</a></div>
                                         </div>
                                     </div>

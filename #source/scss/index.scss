@@ -197,6 +197,12 @@ flex-direction: column;
 .block-info__bottom {
 	width: 100%;
 	height: 2em;
+				width: 5em;
+				height: 5em;
+	& svg{
+			width: 5em;
+			height: 5em;
+	}
 }
 .block-bottom__content {
 	display: flex;

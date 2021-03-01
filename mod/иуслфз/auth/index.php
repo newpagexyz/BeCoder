@@ -31,7 +31,7 @@
                         <div class="null">
                             <div class="logo__list">
                                 <div>
-                                    <a href="" class="nav__logo"><img src="icon/logo.svg"></a>
+                                    <a href="" class="nav__logo"><img src="/icon/logo.svg"></a>
                                 </div>
 
                             </div>
@@ -96,7 +96,7 @@
 										<div class="tabs__input tabs-input">
 												<div class="tabs-input__text1 tabs-input__item"><input required type="email" placeholder="E-mail"
 																																							 tabindex="1"
-																																							 name="name"></div>
+																																							 name="email"></div>
 
 												<div class="tabs-input__text2 tabs-input__item"><input required type="password" placeholder="Пароль"
 																																							 tabindex="2"
@@ -106,6 +106,7 @@
 
 								<div class="submit">
 									<input type="submit" class="submit__btn" value="Войти">
+                                    <a href="/reg/" style="padding-top: 1em">Регистрация</a>
 								</div>
 						</div>
 		</form>
